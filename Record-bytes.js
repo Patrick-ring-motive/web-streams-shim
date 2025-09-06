@@ -8,7 +8,7 @@
     (() => {
       (record?.prototype??{}).bytes ??= Object.setPrototypeOf(async function bytes() {
         return new Uint8Array(await this.arrayBuffer());
-      }, Q(()=>Uint8Array));
+      }, Q(()=>Uint8Array)??{});
     })();
   };
 })();
