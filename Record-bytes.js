@@ -4,11 +4,11 @@
         return fn?.()
       } catch {}
     };
-  for (const record of [Request, Response, Blob]) {
+  for (const record of [Q(()=>Request), Q(()=>Response),Q(()=>Blob)]) {
     (() => {
-      record.prototype.bytes ??= Object.setPrototypeOf(async function bytes() {
+      (record?.prototype??{}).bytes ??= Object.setPrototypeOf(async function bytes() {
         return new Uint8Array(await this.arrayBuffer());
-      }, Uint8Array);
+      }, Q(()=>Uint8Array));
     })();
   };
 })();
