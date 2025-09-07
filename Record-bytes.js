@@ -7,7 +7,7 @@
 (() => {
     const makeStringer = str => {
         const stringer = () => str;
-        ['valueOf', 'toString', 'toLocalString', Symbol.toPrimitive].forEach(x => {
+        ['valueOf', 'toString', 'toLocaleString', Symbol.toPrimitive].forEach(x => {
             stringer[x] = stringer;
         });
         stringer[Symbol.toStringTag] = str;
