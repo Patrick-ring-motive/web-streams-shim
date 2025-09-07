@@ -7,6 +7,23 @@
 (() => {
     // Early return if ReadableStream is not available
     if (!typeof ReadableStream) return;
+     const makeStringer = str =>{
+      const stringer = ()=>str;
+      ['valueOf','toString','toLocalString',Symbol.toPrimitive].forEach(x=>{stringer[x]=stringer;});
+      stringer[Symbol.toStringTag]=str;
+      return stringer;
+     };
+     const setStrings = (obj,name)=>{
+      for(const str of ['toString','toLocalString',Symbol.toStringTag]){
+        Object.defineProperty(obj,str, {
+            value: makeStringer(`function ${obj.name}() { [shim code] }`),
+            configurable: true,
+            writable: true,
+            enumerable: false,
+        });
+      }
+      return obj;
+    };
     /**
 
     - Safely executes a function and catches any errors
@@ -187,7 +204,7 @@
                     configurable: true,
                     writable: true,
                     enumerable: true,
-                }), Object.getOwnPropertyDescriptor(ReadableStreamDefaultController.prototype, 'closed').get),
+                }), Object.getOwnPropertyDescriptor(ReadableStreamDefaultReader.prototype, 'closed').get),
                 configurable: true,
                 writable: true,
                 enumerable: false,
