@@ -7,7 +7,6 @@
 (() => {
     // Early return if ReadableStream is not available
     if (!typeof ReadableStream) return;
-
     /**
 
     - Safely executes a function and catches any errors
