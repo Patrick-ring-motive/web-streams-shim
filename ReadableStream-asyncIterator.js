@@ -187,7 +187,7 @@
                     configurable: true,
                     writable: true,
                     enumerable: true,
-                }), Object.getOwnPropertyDescriptor(ReadableStreamDefaultReader.prototype, 'closed').get),
+                }), Object.getOwnPropertyDescriptor(ReadableStreamDefaultController.prototype, 'closed').get),
                 configurable: true,
                 writable: true,
                 enumerable: false,
