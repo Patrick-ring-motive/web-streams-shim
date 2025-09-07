@@ -7,22 +7,24 @@
 (() => {
     // Early return if ReadableStream is not available
     if (!typeof ReadableStream) return;
-     const makeStringer = str =>{
-      const stringer = ()=>str;
-      ['valueOf','toString','toLocalString',Symbol.toPrimitive].forEach(x=>{stringer[x]=stringer;});
-      stringer[Symbol.toStringTag]=str;
-      return stringer;
-     };
-     const setStrings = (obj,name)=>{
-      for(const str of ['toString','toLocalString',Symbol.toStringTag]){
-        Object.defineProperty(obj,str, {
-            value: makeStringer(`function ${obj.name}() { [shim code] }`),
-            configurable: true,
-            writable: true,
-            enumerable: false,
+    const makeStringer = str => {
+        const stringer = () => str;
+        ['valueOf', 'toString', 'toLocalString', Symbol.toPrimitive].forEach(x => {
+            stringer[x] = stringer;
         });
-      }
-      return obj;
+        stringer[Symbol.toStringTag] = str;
+        return stringer;
+    };
+    const setStrings = (obj, name) => {
+        for (const str of ['toString', 'toLocalString', Symbol.toStringTag]) {
+            Object.defineProperty(obj, str, {
+                value: makeStringer(`function ${obj.name}() { [shim code] }`),
+                configurable: true,
+                writable: true,
+                enumerable: false,
+            });
+        }
+        return obj;
     };
     /**
 
@@ -34,6 +36,17 @@
         try {
             return fn?.();
         } catch {}
+    };
+    const asyncQ = async (fn) => {
+        try {
+            return await fn?.();
+        } catch {}
+    };
+    const terminate = async (x, reason) => {
+        await asyncQ(async () => x.cancel(reason));
+        await asyncQ(async () => x.close(reason));
+        await asyncQ(async () => x.releaseLock(reason));
+        return await asyncQ(async () => x.closed);
     };
     /**
 
@@ -127,8 +140,7 @@
              */
             ReadableStreamDefaultReader.prototype['return'] ?? Object.defineProperty(ReadableStreamDefaultReader.prototype, 'return', {
                 value: Object.setPrototypeOf(setStrings(Object.defineProperty(function $return(reason) {
-                    Q(() => this.cancel?.(reason));
-                    Q(() => this.releaseLock?.());
+                    terminate(this, reason);
                     return new StreamEnd(reason);
                 }, 'name', {
                     value: 'return',
@@ -159,8 +171,8 @@
              */
             ReadableStreamDefaultReader.prototype['throw'] ?? Object.defineProperty(ReadableStreamDefaultReader.prototype, 'throw', {
                 value: Object.setPrototypeOf(setStrings(Object.defineProperty(function $throw(reason) {
-                    Q(() => this.cancel?.(reason));
-                    Q(() => this.releaseLock?.());
+                    terminate(this, reason);
+                    console.error(reason);
                     return new StreamEnd(reason);
                 }, 'name', {
                     value: 'throw',
@@ -195,10 +207,8 @@
              * await reader[Symbol.asyncDispose]();
              */
             ReadableStreamDefaultReader.prototype[$asyncDispose] ?? Object.defineProperty(ReadableStreamDefaultReader.prototype, $asyncDispose, {
-                value: Object.setPrototypeOf(setStrings(Object.defineProperty(function asyncDispose(reason) {
-                    Q(() => this.cancel?.(reason));
-                    Q(() => this.releaseLock?.());
-                    return Q(() => this.closed);
+                value: Object.setPrototypeOf(setStrings(Object.defineProperty(async function asyncDispose(reason) {
+                    return await terminate(this, reason);
                 }, 'name', {
                     value: 'Symbol.asyncDispose',
                     configurable: true,
