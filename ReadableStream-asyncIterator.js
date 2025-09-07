@@ -42,11 +42,11 @@
           })();
           (() => {
               ReadableStreamDefaultReader.prototype['throw'] ?? Object.defineProperty(ReadableStreamDefaultReader.prototype, 'throw', {
-                  value: Object.setPrototypeOf(function release(reason) {
+                  value: Object.setPrototypeOf(function error(reason) {
                       Q(() => this.cancel?.(reason));
                       Q(() => this.releaseLock?.());
                       return new StreamEnd(reason);
-                  }, ReadableStreamDefaultReader.prototype.cancel),
+                  }, ReadableStreamDefaultController.prototype.error),
                   configurable: true,
                   writable: true,
                   enumerable: false,
