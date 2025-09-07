@@ -52,6 +52,19 @@
                   enumerable: false,
               });
           })();
+        (() => {
+          const $asyncDispose = Symbol.asyncDispose ?? 'Symbol.asyncDispose';
+              ReadableStreamDefaultReader.prototype[$asyncDispose] ?? Object.defineProperty(ReadableStreamDefaultReader.prototype, $asyncDispose, {
+                  value: Object.setPrototypeOf(function asyncDispose(reason) {
+                      Q(() => this.cancel?.(reason));
+                      Q(() => this.releaseLock?.());
+                      return Q(() => this.closed);
+                  }, Object.getOwnPropertyDescriptor(ReadableStreamDefaultController.prototype,'closed').get),
+                  configurable: true,
+                  writable: true,
+                  enumerable: false,
+              });
+          })();
       })();
       (() => {
           const $readers = new(globalThis.WeakMap ?? Map);
