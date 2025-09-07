@@ -62,9 +62,14 @@
   - console.log(chunk);
   - }
     */
-    ReadableStreamDefaultReader.prototype[Symbol.asyncIterator] ??= Object.setPrototypeOf(function asyncIterator() {
+    ReadableStreamDefaultReader.prototype[Symbol.asyncIterator] ??= Object.setPrototypeOf(Object.defineProperty(function asyncIterator() {
     return this;
-    }, ReadableStreamDefaultReader);
+    },'name',{
+     value:'Symbol.asyncIterator',
+     configurable: true,
+      writable: true,
+     enumerable: true,
+    }), ReadableStreamDefaultReader);
     })();
 
 /**
