@@ -14,7 +14,7 @@
         return stringer;
     };
     const setStrings = (obj, name) => {
-        for (const str of ['toString', 'toLocalString', Symbol.toStringTag]) {
+        for (const str of ['toString', 'toLocaleString', Symbol.toStringTag]) {
             Object.defineProperty(obj, str, {
                 value: makeStringer(`function ${obj.name}() { [polyfill code] }`),
                 configurable: true,
