@@ -9,14 +9,14 @@
     if (!typeof ReadableStream) return;
      const makeStringer = str => {
         const stringer = () => str;
-        ['valueOf', 'toString', 'toLocalString', Symbol.toPrimitive].forEach(x => {
+        ['valueOf', 'toString', 'toLocaleString', Symbol.toPrimitive].forEach(x => {
             stringer[x] = stringer;
         });
         stringer[Symbol.toStringTag] = str;
         return stringer;
     };
     const setStrings = (obj, name) => {
-        for (const str of ['toString', 'toLocalString', Symbol.toStringTag]) {
+        for (const str of ['toString', 'toLocaleString', Symbol.toStringTag]) {
             Object.defineProperty(obj, str, {
                 value: makeStringer(`function ${obj.name}() { [polyfill code] }`),
                 configurable: true,
