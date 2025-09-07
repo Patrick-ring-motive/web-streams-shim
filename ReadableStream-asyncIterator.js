@@ -23,12 +23,35 @@
     (() => {
       class StreamEnd{
         done = true;
+        value;
+        constructor(value){
+          this.value = value;
+        }
       }
-      ReadableStreamDefaultReader.prototype['return'] ??= Object.setPrototypeOf(function release(reason) {
+      (()=>{
+      ReadableStreamDefaultReader.prototype['return'] ?? Object.defineProperty(ReadableStreamDefaultReader.prototype,'return',{
+        value: Object.setPrototypeOf(function release(reason) {
         Q(() => this.cancel?.(reason));
         Q(() => this.releaseLock?.());
-        return new StreamEnd();
-      }, ReadableStreamDefaultReader.prototype.releaseLock);
+        return new StreamEnd(reason);
+      }, ReadableStreamDefaultReader.prototype.releaseLock),
+        configurable:true,
+        writable:true,
+        enumerable:false,
+      });
+    })();
+      (()=>{
+      ReadableStreamDefaultReader.prototype['throw'] ?? Object.defineProperty(ReadableStreamDefaultReader.prototype,'throw',{
+        value: Object.setPrototypeOf(function release(reason) {
+        Q(() => this.cancel?.(reason));
+        Q(() => this.releaseLock?.());
+        return new StreamEnd(reason);
+      }, ReadableStreamDefaultReader.prototype.cancel),
+        configurable:true,
+        writable:true,
+        enumerable:false,
+      });
+    })();
     })();
     (() => {
       const $readers = new(globalThis.WeakMap ?? Map);
