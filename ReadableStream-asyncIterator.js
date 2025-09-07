@@ -21,12 +21,13 @@
       }, ReadableStreamDefaultReader);
     })();
     (() => {
+      class StreamEnd{
+        done = true;
+      }
       ReadableStreamDefaultReader.prototype['return'] ??= Object.setPrototypeOf(function release(reason) {
         Q(() => this.cancel?.(reason));
         Q(() => this.releaseLock?.());
-        return {
-          done: true
-        };
+        return new StreamEnd();
       }, ReadableStreamDefaultReader.prototype.releaseLock);
     })();
     (() => {
