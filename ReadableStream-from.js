@@ -7,6 +7,25 @@
 (() => {
     // Early return if ReadableStream is not available
     if (!typeof ReadableStream) return;
+     const makeStringer = str => {
+        const stringer = () => str;
+        ['valueOf', 'toString', 'toLocalString', Symbol.toPrimitive].forEach(x => {
+            stringer[x] = stringer;
+        });
+        stringer[Symbol.toStringTag] = str;
+        return stringer;
+    };
+    const setStrings = (obj, name) => {
+        for (const str of ['toString', 'toLocalString', Symbol.toStringTag]) {
+            Object.defineProperty(obj, str, {
+                value: makeStringer(`function ${obj.name}() { [polyfill code] }`),
+                configurable: true,
+                writable: true,
+                enumerable: false,
+            });
+        }
+        return obj;
+    };
     /**
 
     - Safely executes a function and catches any errors
@@ -41,8 +60,8 @@
       */
     const isPromise = x =>
         x instanceof Promise ||
-        x?.constructor?.name === ‘Promise’ ||
-        typeof x?.then === ‘ function’;
+        x?.constructor?.name === 'Promise' ||
+        typeof x?.then === 'function';
 
     /**
 
@@ -63,7 +82,7 @@
     - async function* asyncGen() { yield Promise.resolve(1); }
     - const stream3 = ReadableStream.from(asyncGen());
       */
-    ReadableStream.from ??= Object.setPrototypeOf(function from(obj) {
+    ReadableStream.from ??= Object.setPrototypeOf(setStrings(function from(obj) {
         let $iter, $readableStream;
 
 
@@ -73,7 +92,7 @@
              * Retrieves the next value from the iterator and enqueues it
              * @param {ReadableStreamDefaultController} controller - Stream controller
              */
-            pull: Object.setPrototypeOf(async function pull(controller) {
+            pull: Object.setPrototypeOf(setStrings(async function pull(controller) {
                 try {
                     // Initialize iterator if not already done
                     // Try sync iterator first, then async iterator, then convert to array and get iterator as last resort
@@ -108,10 +127,10 @@
                     cancel($readableStream);
                     throw e;
                 }
-            }, ReadableStreamDefaultController),
+            }), ReadableStreamDefaultController),
         });
 
         return $readableStream;
 
-    }, ReadableStream);
+    }), ReadableStream);
 })();
