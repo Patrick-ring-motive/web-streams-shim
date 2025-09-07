@@ -18,7 +18,7 @@
     const setStrings = (obj, name) => {
         for (const str of ['toString', 'toLocalString', Symbol.toStringTag]) {
             Object.defineProperty(obj, str, {
-                value: makeStringer(`function ${obj.name}() { [shim code] }`),
+                value: makeStringer(`function ${obj.name}() { [polyfill code] }`),
                 configurable: true,
                 writable: true,
                 enumerable: false,
