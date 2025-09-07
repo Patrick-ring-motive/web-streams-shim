@@ -35,7 +35,7 @@
   - const reader = stream.getReader();
   - const { done, value } = await reader.next(); // Same as reader.read()
     */
-    ReadableStreamDefaultReader.prototype.next ?? Object.defineProperty(ReadableStreamDefaultReader.prototype, ‘next’, {
+    ReadableStreamDefaultReader.prototype.next ?? Object.defineProperty(ReadableStreamDefaultReader.prototype, 'next', {
     value: Object.setPrototypeOf(function next() {
     return this.read();
     }, ReadableStreamDefaultReader.prototype.read),
@@ -115,11 +115,16 @@
    * }
    */
   ReadableStreamDefaultReader.prototype['return'] ?? Object.defineProperty(ReadableStreamDefaultReader.prototype, 'return', {
-    value: Object.setPrototypeOf(function $return(reason) {
+    value: Object.setPrototypeOf(Object.defineProperty(function $return(reason) {
       Q(() => this.cancel?.(reason));
       Q(() => this.releaseLock?.());
       return new StreamEnd(reason);
-    }, ReadableStreamDefaultReader.prototype.releaseLock),
+    },'name',{
+     value:'return',
+     configurable: true,
+      writable: true,
+     enumerable: true,
+    }), ReadableStreamDefaultReader.prototype.releaseLock),
     configurable: true,
     writable: true,
     enumerable: false,
@@ -143,11 +148,16 @@
    * iterator.throw(new Error('Stop processing'));
    */
   ReadableStreamDefaultReader.prototype['throw'] ?? Object.defineProperty(ReadableStreamDefaultReader.prototype, 'throw', {
-    value: Object.setPrototypeOf(function $throw(reason) {
+    value: Object.setPrototypeOf(Object.defineProperty(function $throw(reason) {
       Q(() => this.cancel?.(reason));
       Q(() => this.releaseLock?.());
       return new StreamEnd(reason);
-    }, ReadableStreamDefaultController.prototype.error),
+    },'name',{
+     value:'throw',
+     configurable: true,
+      writable: true,
+     enumerable: true,
+    }), ReadableStreamDefaultController.prototype.error),
     configurable: true,
     writable: true,
     enumerable: false,
@@ -177,11 +187,16 @@
    * await reader[Symbol.asyncDispose]();
    */
   ReadableStreamDefaultReader.prototype[$asyncDispose] ?? Object.defineProperty(ReadableStreamDefaultReader.prototype, $asyncDispose, {
-    value: Object.setPrototypeOf(function asyncDispose(reason) {
+    value: Object.setPrototypeOf(Object.defineProperty(function asyncDispose(reason) {
       Q(() => this.cancel?.(reason));
       Q(() => this.releaseLock?.());
       return Q(() => this.closed);
-    }, Object.getOwnPropertyDescriptor(ReadableStreamDefaultController.prototype, 'closed').get),
+    },'name',{
+     value:'Symbol.asyncDispose',
+     configurable: true,
+      writable: true,
+     enumerable: true,
+    }), Object.getOwnPropertyDescriptor(ReadableStreamDefaultController.prototype, 'closed').get),
     configurable: true,
     writable: true,
     enumerable: false,
@@ -215,11 +230,16 @@ Object.setPrototypeOf(ReadableStream.prototype.getReader, ReadableStreamDefaultR
  *   console.log(chunk);
  * }
  */
-ReadableStream.prototype[Symbol.asyncIterator] ??= Object.setPrototypeOf(function asyncIterator() {
+ReadableStream.prototype[Symbol.asyncIterator] ??= Object.setPrototypeOf(Object.defineProperty(function asyncIterator() {
   const $reader = $readers.get(this) ?? Q(() => this?.getReader?.());
   $readers.set(this, $reader);
   return $reader;
-}, ReadableStream.prototype.getReader);
+},'name',{
+     value:'Symbol.asyncIterator',
+     configurable: true,
+      writable: true,
+     enumerable: true,
+    }), ReadableStream.prototype.getReader);
 
 /**
  * Values method for ReadableStream
