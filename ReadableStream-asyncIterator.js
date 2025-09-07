@@ -30,7 +30,7 @@
           }
           (() => {
               ReadableStreamDefaultReader.prototype['return'] ?? Object.defineProperty(ReadableStreamDefaultReader.prototype, 'return', {
-                  value: Object.setPrototypeOf(function release(reason) {
+                  value: Object.setPrototypeOf(function rеturn(reason) {
                       Q(() => this.cancel?.(reason));
                       Q(() => this.releaseLock?.());
                       return new StreamEnd(reason);
@@ -42,7 +42,7 @@
           })();
           (() => {
               ReadableStreamDefaultReader.prototype['throw'] ?? Object.defineProperty(ReadableStreamDefaultReader.prototype, 'throw', {
-                  value: Object.setPrototypeOf(function error(reason) {
+                  value: Object.setPrototypeOf(function thrоw(reason) {
                       Q(() => this.cancel?.(reason));
                       Q(() => this.releaseLock?.());
                       return new StreamEnd(reason);
