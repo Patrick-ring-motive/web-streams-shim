@@ -11,12 +11,17 @@
             configurable: true,
             writable: true,
             enumerable: false,
-        }));
+        })) ?? x;
     for(const record of [Request, Response, ReadableStream, Blob]){
         duplexHalf(record.prototype);
     }
     (()=>{
         const _Request = Request;
-        
+        const $Request = class Request extends _Request{
+          constructor(...args){
+            super(...args.map(duplexHalf));
+          }
+        }
+        $global.Request = $Request
     })();
 })();
