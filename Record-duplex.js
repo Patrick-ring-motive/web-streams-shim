@@ -16,12 +16,27 @@
         duplexHalf(record.prototype);
     }
     (()=>{
-        const _Request = Request;
-        const $Request = class Request extends _Request{
+        let $Request = Request;
+        $Request = class Request extends $Request{
           constructor(...args){
             super(...args.map(duplexHalf));
           }
         }
-        $global.Request = $Request
+        $global.Request = $Request;
+    })();
+    (()=>{
+        let $Response = Response;
+        $Response = class Response extends $Request{
+          constructor(...args){
+            super(...args.map(duplexHalf));
+          }
+        }
+        $global.Response = $Response;
+    })();
+    (()=>{
+        const $fetch = fetch;
+        $global.fetch = Object.setPrototypeOf(function fetch(...args){
+            return $fetch.apply(this,args.map(duplexHalf));
+        },$fetch);
     })();
 })();
