@@ -37,6 +37,7 @@
             return fn?.();
         } catch {}
     };
+    const instanceOf = (x,y) => Q(()=>x instanceof y);
     /**
 
     - Internal class to manage streaming components for body property
@@ -79,7 +80,7 @@
     - @param {*} x - Value to check
     - @returns {boolean} True if the value appears to be a Promise
       */
-    const isPromise = x => x instanceof Promise || x?.constructor?.name === 'Promise' || typeof x?.then === 'function';
+    const isPromise = x => instanceOf(x,Promise) || instanceOf(Promise.prototype,x?.constructor) || x?.constructor?.name === 'Promise' || typeof x?.then === 'function';
     // Apply body property polyfill to Request and Response
     for (const record of [Request, Response]) {
         (() => {
@@ -117,11 +118,10 @@
                     return Object.setPrototypeOf(setStrings(function body() {
                         // GET and HEAD requests have no body
                         if (/GET|HEAD/.test(this.method)) return null;
+                        let $this = this;
                         // Get or create StreamParts for this instance
                         const $streamParts = $bodies.get(this) ?? new StreamParts();
                         $bodies.set(this, $streamParts);
-                        // Clone the original request/response to avoid consuming the original
-                        $streamParts.record ??= this.clone();
                         // Create the body stream if it doesn't exist
                         $streamParts.body ??= new ReadableStream({
                             /**
@@ -131,6 +131,14 @@
                              */
                             start: Object.setPrototypeOf(setStrings(async function start(controller) {
                                 try {
+                                    if(isPromise($this)){
+                                     $this = await $this;
+                                    }
+                                    // Clone the original request/response to avoid consuming the original
+                                    $streamParts.record ??= $this.clone();
+                                    if (isPromise($streamParts.record)) {
+                                        $streamParts.record = await $streamParts.record;
+                                    }
                                     // Convert body to blob if not already done
                                     $streamParts.blob ??= $streamParts.record.blob();
                                     // Await blob conversion if it's a promise
@@ -139,7 +147,13 @@
                                     }
                                     // Get stream from blob and create reader
                                     $streamParts.stream ??= $streamParts.blob.stream();
+                                    if (isPromise($streamParts.stream)) {
+                                        $streamParts.stream = await $streamParts.stream;
+                                    }
                                     $streamParts.reader ??= $streamParts.stream.getReader();
+                                    if (isPromise($streamParts.reader)) {
+                                        $streamParts.reader = await $streamParts.reader;
+                                    }
                                     // Read all chunks from the blob stream and enqueue them
                                     let chunk = await $streamParts.reader.read();
                                     while (chunk?.done === false) {
