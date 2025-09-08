@@ -37,7 +37,7 @@
             return fn?.();
         } catch {}
     };
-
+    const instanceOf = (x,y) => Q(()=>x instanceof y);
     /**
 
     - Safely closes a ReadableStream controller
@@ -58,11 +58,10 @@
     - @param {*} x - Value to check
     - @returns {boolean} True if the value appears to be a Promise
       */
-    const isPromise = x =>
-        x instanceof Promise ||
-        x?.constructor?.name === 'Promise' ||
-        typeof x?.then === 'function';
-
+    const isPromise = x => instanceOf(x,Promise) 
+     || instanceOf(Promise.prototype,x?.constructor) 
+     || x?.constructor?.name === 'Promise' 
+     || typeof x?.then === 'function';
     /**
 
     - Creates a ReadableStream from an iterable object
@@ -94,6 +93,9 @@
              */
             pull: Object.setPrototypeOf(setStrings(async function pull(controller) {
                 try {
+                    if(isPromise($iter)){
+                     $iter = await $iter;
+                    }
                     // Initialize iterator if not already done
                     // Try sync iterator first, then async iterator, then convert to array and get iterator as last resort
                     $iter ??= obj?.[Symbol.iterator]?.() ??
