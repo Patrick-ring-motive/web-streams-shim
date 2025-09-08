@@ -26,7 +26,7 @@
     })();
     (()=>{
         let $Response = Response;
-        $Response = class Response extends $Request{
+        $Response = class Response extends $Response{
           constructor(...args){
             super(...args.map(duplexHalf));
           }
