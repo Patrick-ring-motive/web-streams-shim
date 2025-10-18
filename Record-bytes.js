@@ -1,3 +1,4 @@
+
 /**
 
 - Polyfill for the bytes() method on Request, Response, and Blob objects
@@ -5,6 +6,23 @@
 - @see https://fetch.spec.whatwg.org/#dom-body-bytes
   */
 (() => {
+ const extend = (thisClass, superClass) => {
+        try {
+            Object.setPrototypeOf(thisClass, superClass);
+            Object.setPrototypeOf(
+                thisClass.prototype,
+                superClass?.prototype ??
+                superClass?.constructor?.prototype ??
+                superClass
+            );
+        } catch (e) {
+            console.warn(e, {
+                thisClass,
+                superClass
+            });
+        }
+        return thisClass;
+    };
     const makeStringer = str => {
         const stringer = () => str;
         ['valueOf', 'toString', 'toLocaleString', Symbol.toPrimitive].forEach(x => {
@@ -55,7 +73,7 @@
              * const request = new Request(’/’, { method: ‘POST’, body: ‘data’ });
              * const bytes = await request.bytes(); // Uint8Array
              */
-            (record?.prototype ?? {}).bytes ??= Object.setPrototypeOf(setStrings(async function bytes() {
+            (record?.prototype ?? {}).bytes ??= extend(setStrings(async function bytes() {
                 return new Uint8Array(await this.arrayBuffer());
             }), Q(() => Uint8Array) ?? {});
         })();
