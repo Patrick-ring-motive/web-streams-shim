@@ -8,7 +8,23 @@
 (() => {
     // Early return if required APIs are not available
     if (!typeof Request || !typeof Response || !typeof ReadableStream) return;
-
+const extend = (thisClass, superClass) => {
+    try {
+        Object.setPrototypeOf(thisClass, superClass);
+        Object.setPrototypeOf(
+            thisClass.prototype,
+            superClass?.prototype ??
+            superClass?.constructor?.prototype ??
+            superClass
+        );
+    } catch (e) {
+        console.warn(e, {
+            thisClass,
+            superClass
+        });
+    }
+    return thisClass;
+};
     /**
 
     - Safely executes a function and catches any errors
@@ -135,7 +151,7 @@
          *   body: new ReadableStream() // Automatically gets duplex: 'half'
          * });
          */
-        $global.fetch = Object.setPrototypeOf(function fetch(...args) {
+        $global.fetch = extend(function fetch(...args) {
             return $fetch.apply(this, args.map(duplexHalf));
         }, $fetch);
 
