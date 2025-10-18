@@ -7,7 +7,23 @@
 (() => {
         // Early return if required APIs are not available
         if (!typeof Request || !typeof Response || !typeof ReadableStream) return;
-
+const extend = (thisClass, superClass) => {
+        try {
+            Object.setPrototypeOf(thisClass, superClass);
+            Object.setPrototypeOf(
+                thisClass.prototype,
+                superClass?.prototype ??
+                superClass?.constructor?.prototype ??
+                superClass
+            );
+        } catch (e) {
+            console.warn(e, {
+                thisClass,
+                superClass
+            });
+        }
+        return thisClass;
+    };
         /**
 
         - Creates a function that returns a string for all string conversion methods
@@ -157,7 +173,7 @@
                          * const stream = res.body; // ReadableStream
                          * const reader = stream.getReader();
                          */
-                        return Object.setPrototypeOf(setStrings(function body() {
+                        return extend(setStrings(function body() {
                             // GET and HEAD requests have no body
                             if (/GET|HEAD/.test(this.method)) return null;
 
@@ -175,7 +191,7 @@
                                  * Handles async request/response objects for future constructor compatibility
                                  * @param {ReadableStreamDefaultController} controller - Stream controller
                                  */
-                                start: Object.setPrototypeOf(setStrings(async function start(controller) {
+                                start: extend(setStrings(async function start(controller) {
                                     try {
                                         // Await the request/response object if it's a promise (for future ReadableStream constructor support)
                                         if (isPromise($this)) {
