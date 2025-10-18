@@ -7,7 +7,23 @@
 (() => {
     // Early return if ReadableStream is not available
     if (!typeof ReadableStream) return;
-
+const extend = (thisClass, superClass) => {
+        try {
+            Object.setPrototypeOf(thisClass, superClass);
+            Object.setPrototypeOf(
+                thisClass.prototype,
+                superClass?.prototype ??
+                superClass?.constructor?.prototype ??
+                superClass
+            );
+        } catch (e) {
+            console.warn(e, {
+                thisClass,
+                superClass
+            });
+        }
+        return thisClass;
+    };
     /**
 
     - Creates a function that returns a string for all string conversion methods
@@ -101,7 +117,7 @@
         - const { done, value } = await reader.next(); // Same as reader.read()
           */
         ReadableStreamDefaultReader.prototype.next ?? Object.defineProperty(ReadableStreamDefaultReader.prototype, 'next', {
-            value: Object.setPrototypeOf(setStrings(function next() {
+            value: extend(setStrings(function next() {
                 return this.read();
             }), ReadableStreamDefaultReader.prototype.read),
             configurable: true,
@@ -127,7 +143,7 @@
         - console.log(chunk);
         - }
           */
-        ReadableStreamDefaultReader.prototype[Symbol.asyncIterator] ??= Object.setPrototypeOf(setStrings(Object.defineProperty(function asyncIterator() {
+        ReadableStreamDefaultReader.prototype[Symbol.asyncIterator] ??= extend(setStrings(Object.defineProperty(function asyncIterator() {
             return this;
         }, 'name', {
             value: 'Symbol.asyncIterator',
@@ -181,7 +197,7 @@
              * }
              */
             ReadableStreamDefaultReader.prototype['return'] ?? Object.defineProperty(ReadableStreamDefaultReader.prototype, 'return', {
-                value: Object.setPrototypeOf(setStrings(Object.defineProperty(function $return(reason) {
+                value: extend(setStrings(Object.defineProperty(function $return(reason) {
                     terminate(this, reason);
                     return new StreamEnd(reason);
                 }, 'name', {
@@ -213,7 +229,7 @@
              * iterator.throw(new Error('Stop processing'));
              */
             ReadableStreamDefaultReader.prototype['throw'] ?? Object.defineProperty(ReadableStreamDefaultReader.prototype, 'throw', {
-                value: Object.setPrototypeOf(setStrings(Object.defineProperty(function $throw(reason) {
+                value: extend(setStrings(Object.defineProperty(function $throw(reason) {
                     terminate(this, reason);
                     console.error(reason);
                     return new StreamEnd(reason);
@@ -252,7 +268,7 @@
              * await reader[Symbol.asyncDispose]();
              */
             ReadableStreamDefaultReader.prototype[$asyncDispose] ?? Object.defineProperty(ReadableStreamDefaultReader.prototype, $asyncDispose, {
-                value: Object.setPrototypeOf(setStrings(Object.defineProperty(async function asyncDispose(reason) {
+                value: extend(setStrings(Object.defineProperty(async function asyncDispose(reason) {
                     return await terminate(this, reason);
                 }, 'name', {
                     value: 'Symbol.asyncDispose',
@@ -280,7 +296,7 @@
 
 
         // Set prototype on getReader method for better type traceability
-        Object.setPrototypeOf(ReadableStream.prototype.getReader, ReadableStreamDefaultReader);
+        extend(ReadableStream.prototype.getReader, ReadableStreamDefaultReader);
 
         /**
          * Async iterator method for ReadableStream
@@ -293,7 +309,7 @@
          *   console.log(chunk);
          * }
          */
-        ReadableStream.prototype[Symbol.asyncIterator] ??= Object.setPrototypeOf(setStrings(Object.defineProperty(function asyncIterator() {
+        ReadableStream.prototype[Symbol.asyncIterator] ??= extend(setStrings(Object.defineProperty(function asyncIterator() {
             const $reader = $readers.get(this) ?? Q(() => this?.getReader?.());
             $readers.set(this, $reader);
             return $reader;
@@ -314,7 +330,7 @@
          *   console.log(chunk);
          * }
          */
-        ReadableStream.prototype.values ??= Object.setPrototypeOf(setStrings(function values() {
+        ReadableStream.prototype.values ??= extend(setStrings(function values() {
             return this[Symbol.asyncIterator]();
         }), ReadableStream.prototype[Symbol.asyncIterator]);
 
