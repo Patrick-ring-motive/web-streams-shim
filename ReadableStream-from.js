@@ -7,7 +7,24 @@
 (() => {
     // Early return if ReadableStream is not available
     if (!typeof ReadableStream) return;
-     const makeStringer = str => {
+     const extend = (thisClass, superClass) => {
+        try {
+            Object.setPrototypeOf(thisClass, superClass);
+            Object.setPrototypeOf(
+                thisClass.prototype,
+                superClass?.prototype ??
+                superClass?.constructor?.prototype ??
+                superClass
+            );
+        } catch (e) {
+            console.warn(e, {
+                thisClass,
+                superClass
+            });
+        }
+        return thisClass;
+    };
+ const makeStringer = str => {
         const stringer = () => str;
         ['valueOf', 'toString', 'toLocaleString', Symbol.toPrimitive].forEach(x => {
             stringer[x] = stringer;
@@ -81,7 +98,7 @@
     - async function* asyncGen() { yield Promise.resolve(1); }
     - const stream3 = ReadableStream.from(asyncGen());
       */
-    ReadableStream.from ??= Object.setPrototypeOf(setStrings(function from(obj) {
+    ReadableStream.from ??= extend(setStrings(function from(obj) {
         let $iter, $readableStream;
 
 
@@ -91,7 +108,7 @@
              * Retrieves the next value from the iterator and enqueues it
              * @param {ReadableStreamDefaultController} controller - Stream controller
              */
-            pull: Object.setPrototypeOf(setStrings(async function pull(controller) {
+            pull: extend(setStrings(async function pull(controller) {
                 try {
                     if(isPromise($iter)){
                      $iter = await $iter;
