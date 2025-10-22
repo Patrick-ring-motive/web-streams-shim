@@ -7,15 +7,32 @@
 (() => {
         // Early return if required APIs are not available
         if (!typeof Request || !typeof Response || !typeof ReadableStream) return;
+
+ const constructPrototype = newClass =>{
+  try{
+   if(newClass?.prototype)return newClass;
+   const constProto = newClass?.constructor?.prototype;
+   if(constProto){
+    newClass.prototype = constProto?.bind?.(constProto) ?? Object.create(constProto);
+    return newClass;
+   }
+   newClass.prototype = newClass?.bind?.(newClass) ?? Object.create(newClass);
+  }catch(e){
+   console.warn(e,newClass);
+  }
+ };
 const extend = (thisClass, superClass) => {
-        try {
-            Object.setPrototypeOf(thisClass, superClass);
+     try{
+            constructPrototype(thisClass);
+            constructPrototype(superClass);
             Object.setPrototypeOf(
                 thisClass.prototype,
                 superClass?.prototype ??
                 superClass?.constructor?.prototype ??
                 superClass
             );
+            Object.setPrototypeOf(thisClass, superClass);
+
         } catch (e) {
             console.warn(e, {
                 thisClass,
