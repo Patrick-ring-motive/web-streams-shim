@@ -7,16 +7,18 @@
 (() => {
         // Early return if required APIs are not available
         if (!typeof Request || !typeof Response || !typeof ReadableStream) return;
-
+const Q = fn =>{
+ try{return fn?.()}catch{}
+};
  const constructPrototype = newClass =>{
   try{
    if(newClass?.prototype)return newClass;
    const constProto = newClass?.constructor?.prototype;
    if(constProto){
-    newClass.prototype = constProto?.bind?.(constProto) ?? Object.create(constProto);
+    newClass.prototype = Q(()=>constProto?.bind?.(constProto)) ?? Object.create(Object(constProto));
     return newClass;
    }
-   newClass.prototype = newClass?.bind?.(newClass) ?? Object.create(newClass);
+   newClass.prototype = Q(()=>newClass?.bind?.(newClass)) ?? Object.create(Object(newClass));
   }catch(e){
    console.warn(e,newClass);
   }
