@@ -7,15 +7,34 @@
 (() => {
     // Early return if ReadableStream is not available
     if (!typeof ReadableStream) return;
-     const extend = (thisClass, superClass) => {
-        try {
-            Object.setPrototypeOf(thisClass, superClass);
+     const Q = fn =>{
+ try{return fn?.()}catch{}
+};
+ const constructPrototype = newClass =>{
+  try{
+   if(newClass?.prototype)return newClass;
+   const constProto = newClass?.constructor?.prototype;
+   if(constProto){
+    newClass.prototype = Q(()=>constProto?.bind?.(constProto)) ?? Object.create(Object(constProto));
+    return newClass;
+   }
+   newClass.prototype = Q(()=>newClass?.bind?.(newClass)) ?? Object.create(Object(newClass));
+  }catch(e){
+   console.warn(e,newClass);
+  }
+ };
+const extend = (thisClass, superClass) => {
+     try{
+            constructPrototype(thisClass);
+            constructPrototype(superClass);
             Object.setPrototypeOf(
                 thisClass.prototype,
                 superClass?.prototype ??
                 superClass?.constructor?.prototype ??
                 superClass
             );
+            Object.setPrototypeOf(thisClass, superClass);
+
         } catch (e) {
             console.warn(e, {
                 thisClass,
@@ -43,17 +62,7 @@
         }
         return obj;
     };
-    /**
 
-    - Safely executes a function and catches any errors
-    - @param {Function} fn - Function to execute
-    - @returns {*} The result of fn() or undefined if an error occurred
-      */
-    const Q = fn => {
-        try {
-            return fn?.();
-        } catch {}
-    };
     const instanceOf = (x,y) => Q(()=>x instanceof y);
     /**
 
