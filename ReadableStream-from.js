@@ -7,24 +7,26 @@
 (() => {
     // Early return if ReadableStream is not available
     if (!typeof ReadableStream) return;
-     const Q = fn =>{
- try{return fn?.()}catch{}
-};
- const constructPrototype = newClass =>{
-  try{
-   if(newClass?.prototype)return newClass;
-   const constProto = newClass?.constructor?.prototype;
-   if(constProto){
-    newClass.prototype = Q(()=>constProto?.bind?.(constProto)) ?? Object.create(Object(constProto));
-    return newClass;
-   }
-   newClass.prototype = Q(()=>newClass?.bind?.(newClass)) ?? Object.create(Object(newClass));
-  }catch(e){
-   console.warn(e,newClass);
-  }
- };
-const extend = (thisClass, superClass) => {
-     try{
+    const Q = fn => {
+        try {
+            return fn?.()
+        } catch {}
+    };
+    const constructPrototype = newClass => {
+        try {
+            if (newClass?.prototype) return newClass;
+            const constProto = newClass?.constructor?.prototype;
+            if (constProto) {
+                newClass.prototype = Q(() => constProto?.bind?.(constProto)) ?? Object.create(Object(constProto));
+                return newClass;
+            }
+            newClass.prototype = Q(() => newClass?.bind?.(newClass)) ?? Object.create(Object(newClass));
+        } catch (e) {
+            console.warn(e, newClass);
+        }
+    };
+    const extend = (thisClass, superClass) => {
+        try {
             constructPrototype(thisClass);
             constructPrototype(superClass);
             Object.setPrototypeOf(
@@ -43,7 +45,7 @@ const extend = (thisClass, superClass) => {
         }
         return thisClass;
     };
- const makeStringer = str => {
+    const makeStringer = str => {
         const stringer = () => str;
         ['valueOf', 'toString', 'toLocaleString', Symbol.toPrimitive].forEach(x => {
             stringer[x] = stringer;
@@ -63,7 +65,7 @@ const extend = (thisClass, superClass) => {
         return obj;
     };
 
-    const instanceOf = (x,y) => Q(()=>x instanceof y);
+    const instanceOf = (x, y) => Q(() => x instanceof y);
     /**
 
     - Safely closes a ReadableStream controller
@@ -84,10 +86,10 @@ const extend = (thisClass, superClass) => {
     - @param {*} x - Value to check
     - @returns {boolean} True if the value appears to be a Promise
       */
-    const isPromise = x => instanceOf(x,Promise) 
-     || instanceOf(Promise.prototype,x?.constructor) 
-     || x?.constructor?.name === 'Promise' 
-     || typeof x?.then === 'function';
+    const isPromise = x => instanceOf(x, Promise) ||
+        instanceOf(Promise.prototype, x?.constructor) ||
+        x?.constructor?.name === 'Promise' ||
+        typeof x?.then === 'function';
     /**
 
     - Creates a ReadableStream from an iterable object
@@ -119,8 +121,8 @@ const extend = (thisClass, superClass) => {
              */
             pull: extend(setStrings(async function pull(controller) {
                 try {
-                    if(isPromise($iter)){
-                     $iter = await $iter;
+                    if (isPromise($iter)) {
+                        $iter = await $iter;
                     }
                     // Initialize iterator if not already done
                     // Try sync iterator first, then async iterator, then convert to array and get iterator as last resort
