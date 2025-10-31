@@ -48,19 +48,3 @@ To satisfy modern `fetch` specifications when streaming request bodies, the libr
 *   **Property Injection:** The `duplex: 'half'` property is added to the prototypes of `Request`, `Response`, `ReadableStream`, and `Blob`.
 *   **Constructor Wrapping:** The global `Request` and `Response` constructors are subclassed and **wrapped** to automatically apply the `duplexHalf` utility function to all arguments passed during instantiation.
 *   **Fetch Wrapping:** The global `fetch` function is **wrapped** to automatically apply the `duplexHalf` utility function to its arguments before execution, guaranteeing compliance when streams are used in options.
-
-## Architectural Strategy (Under the Hood)
-
-The integration relies on several **robust architectural utilities** to safely extend and modify native browser APIs.
-
-1.  **Safe Execution Utilities:**
-    *   **`Q`:** Used for safely executing synchronous functions and suppressing errors.
-    *   **`asyncQ`:** Used for safely executing asynchronous functions and catching errors.
-
-2.  **Resource Termination (`terminate`):** A critical asynchronous utility that ensures proper cleanup when a stream or reader is stopped early. It safely attempts `cancel()`, `close()`, and `releaseLock()` operations on the target object.
-
-3.  **Prototypal Extension (`extend`):** This utility is vital for correctly setting up inheritance for polyfilled classes and functions. It often sets the polyfilled method's prototype to a relevant native method for **"better runtime type traceability"**.
-
-4.  **Debugging Traceability (`setStrings`):** To maintain a consistent debugging experience in mixed environments, polyfilled functions are modified using `setStrings`. This overwrites string conversion methods (`toString`, `Symbol.toStringTag`) to clearly indicate the function is **`[polyfill code]`**.
-
-5.  **Internal State Management:** `WeakMap` (with a `Map` fallback) is used to associate internal state (`$readers` or `$bodies`) with specific object instances. This technique manages stream resources and ensures reader reuse while helping prevent memory leaks.
