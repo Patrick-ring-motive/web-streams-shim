@@ -121,8 +121,8 @@
              */
             pull: extend(setStrings(async function pull(controller) {
                 try {
-                    if (isPromise($iter)) {
-                        $iter = await $iter;
+                    if (isPromise(obj)) {
+                        obj = await obj;
                     }
                     // Initialize iterator if not already done
                     // Try sync iterator first, then async iterator, then convert to array and get iterator as last resort
