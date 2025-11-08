@@ -6,7 +6,7 @@
   */
 (() => {
     // Early return if required APIs are not available
-    if (!typeof Request || !typeof Response || !typeof ReadableStream) return;
+    if ([typeof Request,typeof Response,typeof ReadableStream].includes('undefined')) return;
     const Q = fn => {
         try {
             return fn?.()
