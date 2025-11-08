@@ -6,7 +6,7 @@
   */
 (() => {
     // Early return if ReadableStream is not available
-    if (!typeof ReadableStream) return;
+    if (typeof ReadableStream === 'undefined') return;
     const Q = fn => {
         try {
             return fn?.()
