@@ -7,7 +7,7 @@
   */
 (() => {
     // Early return if required APIs are not available
-    if (!typeof Request || !typeof Response || !typeof ReadableStream) return;
+    if ([typeof Request,typeof Response,typeof ReadableStream].includes('undefined')) return;
     const Q = fn => {
         try {
             return fn?.()
@@ -119,7 +119,7 @@
     - Creates a new Response class that extends the original but processes arguments
       */
     (() => {
-        let $Response = Response;
+        const $Response = Response;
 
 
         /**
@@ -130,13 +130,13 @@
          * const res = new Response(new ReadableStream()); 
          * // ReadableStream automatically gets duplex: 'half'
          */
-        $Response = class Response extends $Response {
+        const _Response = class Response extends $Response {
             constructor(...args) {
                 super(...args.map(duplexHalf));
             }
         };
 
-        $global.Response = $Response;
+        $global.Response = _Response;
 
 
     })();
