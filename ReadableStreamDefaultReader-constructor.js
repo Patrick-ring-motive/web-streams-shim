@@ -92,7 +92,7 @@
 
 
     if (!supportsReadableStreamDefaultReaderConstructor()) {
-        const _ReadableStreamDefaultReader = ReadableStreamDefaultReader;
+        const _ReadableStreamDefaultReader = globslThis.ReadableStreamDefaultReader;
         const $ReadableStreamDefaultReader = function ReadableStreamDefaultReader(stream) {
             return Object.setPrototypeOf(stream.getReader(), globalThis.ReadableStreamDefaultReader.prototype);
         };
