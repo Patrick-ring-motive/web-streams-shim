@@ -810,5 +810,34 @@
 
         })();
     })();
+    const supportsReadableStreamDefaultReaderConstructor = () => {
+        try {
+            const stream = new ReadableStream({
+                start(controller) {
+                    controller.enqueue('test');
+                    controller.close();
+                }
+            });
+            const reader = new ReadableStreamDefaultReader(stream);
+            reader.read();
+            return true;
+        } catch {
+            return false;
+        }
+    }
 
+
+    if (!supportsReadableStreamDefaultReaderConstructor()) {
+        const _ReadableStreamDefaultReader = globslThis.ReadableStreamDefaultReader;
+        const $ReadableStreamDefaultReader = function ReadableStreamDefaultReader(stream) {
+            return Object.setPrototypeOf(stream.getReader(), globalThis.ReadableStreamDefaultReader.prototype);
+        };
+        setString($ReadableStreamDefaultReader);
+        extend($ReadableStreamDefaultReader, _ReadableStreamDefaultReader);
+        globalThis.ReadableStreamDefaultReader = new Proxy($ReadableStreamDefaultReader, {
+            construct(_, [stream]) {
+                return $ReadableStreamDefaultReader(stream)
+            }
+        });
+    }
 })();
