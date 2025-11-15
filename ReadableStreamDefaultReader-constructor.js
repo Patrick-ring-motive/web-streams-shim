@@ -94,13 +94,13 @@
     if (!supportsReadableStreamDefaultReaderConstructor()) {
         const _ReadableStreamDefaultReader = ReadableStreamDefaultReader;
         const $ReadableStreamDefaultReader = function ReadableStreamDefaultReader(stream) {
-            return stream.getReader();
+            return Object.setPrototypeOf(stream.getReader(), globalThis.ReadableStreamDefaultReader.prototype);
         };
         setString($ReadableStreamDefaultReader);
         extend($ReadableStreamDefaultReader, _ReadableStreamDefaultReader);
         globalThis.ReadableStreamDefaultReader = new Proxy($ReadableStreamDefaultReader, {
             construct(_, [stream]) {
-                return $ReadableStreamDefaultReader(stream);
+                return $ReadableStreamDefaultReader(stream)
             }
         });
     }
