@@ -1,5 +1,5 @@
-(()=>{
-const Q = fn => {
+(() => {
+    const Q = fn => {
         try {
             return fn?.()
         } catch {}
@@ -74,35 +74,35 @@ const Q = fn => {
         return obj;
     };
 
-const supportsReadableStreamDefaultReaderConstructor = () => { 
-  try {
-    const stream = new ReadableStream({
-      start(controller) {
-        controller.enqueue('test');
-        controller.close();
-      }
-    });
-    const reader = new ReadableStreamDefaultReader(stream);
-    reader.read();
-    return true;
-  } catch {
-    return false;
-  }
-}
+    const supportsReadableStreamDefaultReaderConstructor = () => {
+        try {
+            const stream = new ReadableStream({
+                start(controller) {
+                    controller.enqueue('test');
+                    controller.close();
+                }
+            });
+            const reader = new ReadableStreamDefaultReader(stream);
+            reader.read();
+            return true;
+        } catch {
+            return false;
+        }
+    }
 
-  
-  if(!supportsReadableStreamDefaultReaderConstructor()){
-    const _ReadableStreamDefaultReader = ReadableStreamDefaultReader;
-    const $ReadableStreamDefaultReader = function ReadableStreamDefaultReader(stream){
-      return stream.getReader();
-    };
+
+    if (!supportsReadableStreamDefaultReaderConstructor()) {
+        const _ReadableStreamDefaultReader = ReadableStreamDefaultReader;
+        const $ReadableStreamDefaultReader = function ReadableStreamDefaultReader(stream) {
+            return stream.getReader();
+        };
         setString($ReadableStreamDefaultReader);
-    extend($ReadableStreamDefaultReader,_ReadableStreamDefaultReader);
-    globalThis.ReadableStreamDefaultReader = new Proxy($ReadableStreamDefaultReader, {
-             construct(_, [stream]) {
-                 return $ReadableStreamDefaultReader(stream);
-             }
-         });
-  }
+        extend($ReadableStreamDefaultReader, _ReadableStreamDefaultReader);
+        globalThis.ReadableStreamDefaultReader = new Proxy($ReadableStreamDefaultReader, {
+            construct(_, [stream]) {
+                return $ReadableStreamDefaultReader(stream);
+            }
+        });
+    }
 
 })();
