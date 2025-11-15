@@ -96,8 +96,13 @@ const supportsReadableStreamDefaultReaderConstructor = () => {
     const $ReadableStreamDefaultReader = function ReadableStreamDefaultReader(stream){
       return stream.getReader();
     };
+        setString($ReadableStreamDefaultReader);
     extend($ReadableStreamDefaultReader,_ReadableStreamDefaultReader);
-    
+    globalThis.ReadableStreamDefaultReader = new Proxy($ReadableStreamDefaultReader, {
+             construct(_, [stream]) {
+                 return $ReadableStreamDefaultReader(stream);
+             }
+         });
   }
 
 })();
