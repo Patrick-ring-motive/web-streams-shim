@@ -90,7 +90,13 @@ const supportsReadableStreamDefaultReaderConstructor = () => {
   }
 }
 
+  
   if(!supportsReadableStreamDefaultReaderConstructor()){
+    const _ReadableStreamDefaultReader = ReadableStreamDefaultReader;
+    const $ReadableStreamDefaultReader = function ReadableStreamDefaultReader(stream){
+      return stream.getReader();
+    };
+    extend($ReadableStreamDefaultReader,_ReadableStreamDefaultReader);
     
   }
 
