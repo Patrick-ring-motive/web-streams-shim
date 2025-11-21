@@ -127,7 +127,7 @@
                     // Initialize iterator if not already done
                     // Try sync iterator first, then async iterator, then convert to array and get iterator as last resort
                     $iter ??= obj?.[Symbol.iterator]?.() ??
-                        obj?.[Symbol.asyncIterator]?.() ?? [...obj][Symbol.iterator]();
+                        obj?.[Symbol.asyncIterator]?.() ?? [][Symbol.iterator].call(obj);
 
                     // Get next chunk from iterator
                     let chunk = $iter.next();
