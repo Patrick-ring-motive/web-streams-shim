@@ -96,7 +96,7 @@
         const $ReadableStreamDefaultReader = function ReadableStreamDefaultReader(stream) {
             return Object.setPrototypeOf(stream.getReader(), globalThis.ReadableStreamDefaultReader.prototype);
         };
-        setString($ReadableStreamDefaultReader);
+        setStrings($ReadableStreamDefaultReader);
         extend($ReadableStreamDefaultReader, _ReadableStreamDefaultReader);
         globalThis.ReadableStreamDefaultReader = new Proxy($ReadableStreamDefaultReader, {
             construct(_, [stream]) {
