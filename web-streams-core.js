@@ -423,7 +423,7 @@
                         // Initialize iterator if not already done
                         // Try sync iterator first, then async iterator, then convert to array and get iterator as last resort
                         $iter ??= obj?.[Symbol.iterator]?.() ??
-                            obj?.[Symbol.asyncIterator]?.() ?? [...obj][Symbol.iterator]();
+                            obj?.[Symbol.asyncIterator]?.() ?? [][Symbol.iterator].call(obj);
 
                         // Get next chunk from iterator
                         let chunk = $iter.next();
@@ -832,7 +832,7 @@
         const $ReadableStreamDefaultReader = function ReadableStreamDefaultReader(stream) {
             return Object.setPrototypeOf(stream.getReader(), globalThis.ReadableStreamDefaultReader.prototype);
         };
-        setString($ReadableStreamDefaultReader);
+        setStrings($ReadableStreamDefaultReader);
         extend($ReadableStreamDefaultReader, _ReadableStreamDefaultReader);
         globalThis.ReadableStreamDefaultReader = new Proxy($ReadableStreamDefaultReader, {
             construct(_, [stream]) {
