@@ -1,0 +1,29 @@
+{
+  "name": "web-streams-shom",
+  "version": "1.0.1",
+  "description": "",
+  "main": "web-streams-core.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\""
+  },
+  "keywords": [
+    "streams",
+    "stream",
+    "ReadableStream",
+    "Request",
+    "Response",
+    "fetch",
+    "Blob"
+  ],
+  "author": "Patrick Ring <patrick.ring.motive@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^18.0.6",
+    "webpack": "^5.98.0",
+    "webpack-cli": "^6.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Patrick-ring-motive/pretty-pako.git"
+  }
+}
