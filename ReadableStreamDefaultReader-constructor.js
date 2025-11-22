@@ -98,11 +98,11 @@
         };
         setStrings($ReadableStreamDefaultReader);
         extend($ReadableStreamDefaultReader, _ReadableStreamDefaultReader);
-        globalThis.ReadableStreamDefaultReader = new Proxy($ReadableStreamDefaultReader, {
-            construct(_, [stream]) {
+        globalThis.ReadableStreamDefaultReader = new Proxy($ReadableStreamDefaultReader, Object.setPrototypeOf({
+            construct:Object.setPrototypeOf(function construct(_, [stream]) {
                 return $ReadableStreamDefaultReader(stream)
-            }
-        });
+            },$ReadableStreamDefaultReader.prototype)
+        },$ReadableStreamDefaultReader));
     }
 
 })();
