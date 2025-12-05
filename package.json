@@ -24,6 +24,5 @@
     "url": "git+https://github.com/Patrick-ring-motive/web-streams-shim.git"
   },
   "author": "patrick.ring.motive@gmail.com",
-  "type": "commonjs",
-  "main": "web-streams-core.js",
+  "type": "commonjs"
 }
