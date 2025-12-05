@@ -18,12 +18,10 @@
   "author": "Patrick Ring <patrick.ring.motive@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "@types/node": "^18.0.6",
-    "webpack": "^5.98.0",
-    "webpack-cli": "^6.0.1"
+    "@types/node": "^18.0.6"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Patrick-ring-motive/pretty-pako.git"
+    "url": "https://github.com/Patrick-ring-motive/web-streams-shim.git"
   }
 }
