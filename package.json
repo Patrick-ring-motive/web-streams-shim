@@ -15,13 +15,15 @@
     "fetch",
     "Blob"
   ],
-  "author": "Patrick Ring <patrick.ring.motive@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "@types/node": "^18.0.6"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Patrick-ring-motive/web-streams-shim.git"
-  }
+    "url": "git+https://github.com/Patrick-ring-motive/web-streams-shim.git"
+  },
+  "author": "patrick.ring.motive@gmail.com",
+  "type": "commonjs",
+  "main": "web-streams-core.js",
 }
