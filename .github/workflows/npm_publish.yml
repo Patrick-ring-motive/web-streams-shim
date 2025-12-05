@@ -16,6 +16,7 @@ jobs:
         with:
           node-version: 20
       - run: npm install -g npm@latest  # Ensure latest npm
+      - run: rm -f .npmrc  
       - run: npm ci
       - run: npm test
 
