@@ -17,7 +17,7 @@ The library adds **comprehensive support for modern JavaScript iteration pattern
 | Target | Method/Property | Description |
 | :--- | :--- | :--- |
 | [`ReadableStream.prototype`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) | `[Symbol.asyncIterator]` | Allows the stream to be directly iterable in `for-await-of` loops. |
-| `ReadableStream.prototype` | `values()` | An alias for `[Symbol.asyncIterator]` for explicit iteration. |
+| [`ReadableStream.prototype`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) | `values()` | An alias for `[Symbol.asyncIterator]` for explicit iteration. |
 
 ![ReadableStream.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStream.@@asyncIterator)
 ![ReadableStream.values](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStream.values)
@@ -28,7 +28,7 @@ The library adds the static method for creating streams from existing data sourc
 
 | Target | Method | Description |
 | :--- | :--- | :--- |
-| `ReadableStream` | `from(obj)` | **Creates a new `ReadableStream` from any iterable or async iterable object**. It handles both synchronous and asynchronous iterators, including objects that yield `Promise`-like values. |
+| [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) | [`from(obj)`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream/from_static) | **Creates a new `ReadableStream` from any iterable or async iterable object**. It handles both synchronous and asynchronous iterators, including objects that yield `Promise`-like values. |
 
 ![Symbol.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStream.from)
 
