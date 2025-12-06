@@ -103,6 +103,7 @@
                 return $ReadableStreamDefaultReader(stream)
             },$ReadableStreamDefaultReader.prototype)
         },$ReadableStreamDefaultReader));
+        globalThis.ReadableStreamDefaultReader.prototype.constructor = globalThis.ReadableStreamDefaultReader
     }
 
 })();
