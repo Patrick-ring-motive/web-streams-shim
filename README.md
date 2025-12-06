@@ -26,7 +26,7 @@ The library adds **comprehensive support for modern JavaScript iteration pattern
 
 The library adds the static method for creating streams from existing data sources.
 
-| Target | Method | Description |
+| Target | Method/Property | Description |
 | :--- | :--- | :--- |
 | [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) | [`from(obj)`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream/from_static) | **Creates a new `ReadableStream` from any iterable or async iterable object**. It handles both synchronous and asynchronous iterators, including objects that yield `Promise`-like values. |
 
@@ -53,14 +53,14 @@ These shims ensure `Request` and `Response` objects (Records) consistently expos
 To satisfy modern `fetch` specifications when streaming request bodies, the library ensures compliance for **half-duplex operations**.
 
 *   **Property Injection:** The `duplex: 'half'` property is added to the prototypes of `Request`, `Response`, `ReadableStream`, and `Blob`.
-*   **Constructor Wrapping:** The global `Request` and `Response` constructors are subclassed and **wrapped** to automatically apply the `duplexHalf` utility function to all arguments passed during instantiation.
-*   **Fetch Wrapping:** The global `fetch` function is **wrapped** to automatically apply the `duplexHalf` utility function to its arguments before execution, guaranteeing compliance when streams are used in options.
+*   **Constructor Wrapping:** The global `Request` and `Response` constructors are subclassed and **wrapped** to automatically apply `duplex: 'half'` utility function to all arguments passed during instantiation.
+*   **Fetch Wrapping:** The global `fetch` function is **wrapped** to automatically apply `duplex: 'half'` to its arguments before execution, guaranteeing compliance when streams are used in options.
 
 ![Request.duplex](https://caniuse.smokestack.workers.dev/?feature=api.Request.duplex)
 
 ### 5. ReadableStreamDefaultReader Constructor Support
 
-The library adds support for the `ReadableStreamDefaultReader` constructor, which is **missing in some runtimes like Bun**. This was the primary motivation for creating this library.
+The library adds support for the `ReadableStreamDefaultReader` constructor.
 
 | Target | Method/Property | Description |
 | :--- | :--- | :--- |
