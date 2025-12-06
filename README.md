@@ -24,7 +24,11 @@ The library adds **comprehensive support for modern JavaScript iteration and dis
 | `ReadableStreamDefaultReader.prototype` | `[Symbol.asyncDispose]` | **Supports the async disposal pattern (`await using`)**. It safely cleans up resources by calling the internal `terminate` function. |
 
 ![Symbol.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStream.@@asyncIterator)
-
+![Symbol.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStream.values)
+![Symbol.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStreamDefaultReader.next)
+![Symbol.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStreamDefaultReader.return)
+![Symbol.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStreamDefaultReader.throw)
+![Symbol.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStreamDefaultReader.@@asyncDispose)
 
 ### 2. Stream Construction Utility
 
