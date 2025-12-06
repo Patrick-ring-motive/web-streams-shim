@@ -17,7 +17,6 @@ The library adds **comprehensive support for modern JavaScript iteration and dis
 | Target | Method/Property | Description |
 | :--- | :--- | :--- |
 | `ReadableStream.prototype` | `[Symbol.asyncIterator]` | Allows the stream to be directly iterable in `for-await-of` loops. It reuses a reader associated with the stream, managed via a `WeakMap`. |
-| `ReadableStream.prototype` | `values()` | An alias for `[Symbol.asyncIterator]` for explicit iteration. |
 | `ReadableStream.prototype` | `[Symbol.asyncIterator]` | Allows the stream to be directly iterable in `for-await-of` loops. It reuses a reader associated with the stream, managed via a `WeakMap`. |
 | `ReadableStream.prototype` | `values()` | An alias for `[Symbol.asyncIterator]` for explicit iteration. |
 |`ReadableStreamDefaultReader.prototype` | `next()` | **Delegates directly to the reader’s native `read()` method**, fulfilling the async iterator requirement. |
