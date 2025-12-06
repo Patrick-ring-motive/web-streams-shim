@@ -57,3 +57,13 @@ To satisfy modern `fetch` specifications when streaming request bodies, the libr
 *   **Fetch Wrapping:** The global `fetch` function is **wrapped** to automatically apply the `duplexHalf` utility function to its arguments before execution, guaranteeing compliance when streams are used in options.
 
 ![Request.duplex](https://caniuse.smokestack.workers.dev/?feature=api.Request.duplex)
+
+### 5. ReadableStreamDefaultReader Constructor Support
+
+The library adds support for the `ReadableStreamDefaultReader` constructor, which is **missing in some runtimes like Bun**. This was the primary motivation for creating this library.
+
+| Target | Method/Property | Description |
+| :--- | :--- | :--- |
+| [`ReadableStreamDefaultReader`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamDefaultReader) | [`constructor(stream)`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream/ReadableStream) | **Polyfills the `ReadableStreamDefaultReader` constructor** to accept a stream directly. In environments where the native constructor doesn't support this (like Bun), it delegates to `stream.getReader()` and properly sets up the prototype chain. This allows `new ReadableStreamDefaultReader(stream)` to work consistently across all runtimes. |
+
+![ReadableStreamDefaultReader.constructor](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStreamDefaultReader.constructor)
