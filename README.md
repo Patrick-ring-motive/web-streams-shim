@@ -18,17 +18,9 @@ The library adds **comprehensive support for modern JavaScript iteration and dis
 | :--- | :--- | :--- |
 | `ReadableStream.prototype` | `[Symbol.asyncIterator]` | Allows the stream to be directly iterable in `for-await-of` loops. |
 | `ReadableStream.prototype` | `values()` | An alias for `[Symbol.asyncIterator]` for explicit iteration. |
-|`ReadableStreamDefaultReader.prototype` | `next()` | **Delegates directly to the reader’s native `read()` method**, fulfilling the async iterator requirement. |
-| `ReadableStreamDefaultReader.prototype` | `return(reason)` | Handles early termination (e.g., `break` or `return` within iteration). It safely calls the internal **`terminate` function** to cancel the stream and release the lock. |
-| `ReadableStreamDefaultReader.prototype` | `throw(reason)` | Handles error injection into the iteration. It calls `terminate` to cancel the stream and release the lock, and logs the error. |
-| `ReadableStreamDefaultReader.prototype` | `[Symbol.asyncDispose]` | **Supports the async disposal pattern (`await using`)**. It safely cleans up resources by calling the internal `terminate` function. |
 
 ![Symbol.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStream.@@asyncIterator)
 ![Symbol.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStream.values)
-![Symbol.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStreamDefaultReader.next)
-![Symbol.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStreamDefaultReader.return)
-![Symbol.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStreamDefaultReader.throw)
-![Symbol.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStreamDefaultReader.@@asyncDispose)
 
 ### 2. Stream Construction Utility
 
