@@ -1,6 +1,6 @@
 ## Web Streams Shim Library
 
-This README provides a comprehensive overview of the features and architectural strategies used in this Web Streams Shim Library, which is designed to integrate modern streams functionality into legacy JavaScript environments.
+This README provides an overview of the features in this Web Streams Shim Library, which is designed to create parity between the streaming interfaces within modern runtimes.
 
 This library provides essential polyfills and shims to ensure modern Web Streams functionality is available and compliant across environments where native support is missing or incomplete, particularly focusing on `ReadableStream`, `Request`, `Response`, and `Blob` objects.
 
