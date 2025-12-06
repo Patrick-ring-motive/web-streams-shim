@@ -50,10 +50,10 @@ These shims ensure `Request` and `Response` objects (Records) consistently expos
 
 ### 4. Duplex Compliance Shim
 
-![Request.duplex](https://caniuse.smokestack.workers.dev/?feature=api.Request.duplex)
-
 To satisfy modern `fetch` specifications when streaming request bodies, the library ensures compliance for **half-duplex operations**.
 
 *   **Property Injection:** The `duplex: 'half'` property is added to the prototypes of `Request`, `Response`, `ReadableStream`, and `Blob`.
 *   **Constructor Wrapping:** The global `Request` and `Response` constructors are subclassed and **wrapped** to automatically apply the `duplexHalf` utility function to all arguments passed during instantiation.
 *   **Fetch Wrapping:** The global `fetch` function is **wrapped** to automatically apply the `duplexHalf` utility function to its arguments before execution, guaranteeing compliance when streams are used in options.
+
+![Request.duplex](https://caniuse.smokestack.workers.dev/?feature=api.Request.duplex)
