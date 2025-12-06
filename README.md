@@ -16,11 +16,11 @@ The library adds **comprehensive support for modern JavaScript iteration pattern
 
 | Target | Method/Property | Description |
 | :--- | :--- | :--- |
-| `ReadableStream.prototype` | `[Symbol.asyncIterator]` | Allows the stream to be directly iterable in `for-await-of` loops. |
+| [`ReadableStream.prototype`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) | `[Symbol.asyncIterator]` | Allows the stream to be directly iterable in `for-await-of` loops. |
 | `ReadableStream.prototype` | `values()` | An alias for `[Symbol.asyncIterator]` for explicit iteration. |
 
-![Symbol.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStream.@@asyncIterator)
-![Symbol.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStream.values)
+![ReadableStream.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStream.@@asyncIterator)
+![ReadableStream.values](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStream.values)
 
 ### 2. Stream Construction Utility
 
