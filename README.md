@@ -10,9 +10,9 @@ This library provides essential polyfills and shims to ensure modern Web Streams
 
 The library focuses on extending core browser APIs to meet the latest Web Stream and Fetch specifications.
 
-### 1. ReadableStream Async Iteration and Disposal
+### 1. ReadableStream Async Iteration
 
-The library adds **comprehensive support for modern JavaScript iteration and disposal patterns** to `ReadableStream` and its readers.
+The library adds **comprehensive support for modern JavaScript iteration patterns** to `ReadableStream` and its readers.
 
 | Target | Method/Property | Description |
 | :--- | :--- | :--- |
