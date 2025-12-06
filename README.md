@@ -30,6 +30,8 @@ The library adds the static method for creating streams from existing data sourc
 | :--- | :--- | :--- |
 | `ReadableStream` | `from(obj)` | **Creates a new `ReadableStream` from any iterable or async iterable object**. It handles both synchronous and asynchronous iterators, including objects that yield `Promise`-like values. |
 
+![Symbol.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStream.from)
+
 ### 3. Fetch and Body Integration Shims
 
 These shims ensure `Request` and `Response` objects (Records) consistently expose their body as a stream and provide the `bytes()` utility.
@@ -40,7 +42,13 @@ These shims ensure `Request` and `Response` objects (Records) consistently expos
 | `Response.prototype` | `body` (Getter) | Provides the body content as a `ReadableStream`. The implementation clones the original record, converts the body to a `Blob`, gets the blob's stream, and enqueues chunks via a controller. |
 | `Request.prototype`, `Response.prototype`, `Blob.prototype` | `bytes()` | Adds the `bytes()` method, which **asynchronously returns the object's body/content as a `Uint8Array`**. It achieves this by calling the native `arrayBuffer()` and wrapping the result. |
 
+![Symbol.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=api.Request.bytes)
+![Symbol.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=api.Response.bytes)
+![Symbol.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=api.Blob.bytes)
+
 ### 4. Duplex Compliance Shim
+
+![Symbol.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=api.Request.duplex)
 
 To satisfy modern `fetch` specifications when streaming request bodies, the library ensures compliance for **half-duplex operations**.
 
