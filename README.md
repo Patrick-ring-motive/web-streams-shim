@@ -42,13 +42,15 @@ These shims ensure `Request` and `Response` objects (Records) consistently expos
 | `Response.prototype` | `body` (Getter) | Provides the body content as a `ReadableStream`. The implementation clones the original record, converts the body to a `Blob`, gets the blob's stream, and enqueues chunks via a controller. |
 | `Request.prototype`, `Response.prototype`, `Blob.prototype` | `bytes()` | Adds the `bytes()` method, which **asynchronously returns the object's body/content as a `Uint8Array`**. It achieves this by calling the native `arrayBuffer()` and wrapping the result. |
 
-![Symbol.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=api.Request.bytes)
-![Symbol.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=api.Response.bytes)
-![Symbol.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=api.Blob.bytes)
+![Request.body](https://caniuse.smokestack.workers.dev/?feature=api.Request.body)
+![Response.body](https://caniuse.smokestack.workers.dev/?feature=api.Response.body)
+![Request.bytes](https://caniuse.smokestack.workers.dev/?feature=api.Request.bytes)
+![Response.bytes](https://caniuse.smokestack.workers.dev/?feature=api.Response.bytes)
+![Blob.bytes](https://caniuse.smokestack.workers.dev/?feature=api.Blob.bytes)
 
 ### 4. Duplex Compliance Shim
 
-![Symbol.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=api.Request.duplex)
+![Request.duplex](https://caniuse.smokestack.workers.dev/?feature=api.Request.duplex)
 
 To satisfy modern `fetch` specifications when streaming request bodies, the library ensures compliance for **half-duplex operations**.
 
