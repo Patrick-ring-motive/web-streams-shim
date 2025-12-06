@@ -18,7 +18,9 @@ The library adds **comprehensive support for modern JavaScript iteration and dis
 | :--- | :--- | :--- |
 | `ReadableStream.prototype` | `[Symbol.asyncIterator]` | Allows the stream to be directly iterable in `for-await-of` loops. It reuses a reader associated with the stream, managed via a `WeakMap`. |
 | `ReadableStream.prototype` | `values()` | An alias for `[Symbol.asyncIterator]` for explicit iteration. |
-| `ReadableStreamDefaultReader.prototype` | `next()` | **Delegates directly to the reader’s native `read()` method**, fulfilling the async iterator requirement. |
+| `ReadableStream.prototype` | `[Symbol.asyncIterator]` | Allows the stream to be directly iterable in `for-await-of` loops. It reuses a reader associated with the stream, managed via a `WeakMap`. |
+| `ReadableStream.prototype` | `values()` | An alias for `[Symbol.asyncIterator]` for explicit iteration. |
+|`ReadableStreamDefaultReader.prototype` | `next()` | **Delegates directly to the reader’s native `read()` method**, fulfilling the async iterator requirement. |
 | `ReadableStreamDefaultReader.prototype` | `return(reason)` | Handles early termination (e.g., `break` or `return` within iteration). It safely calls the internal **`terminate` function** to cancel the stream and release the lock. |
 | `ReadableStreamDefaultReader.prototype` | `throw(reason)` | Handles error injection into the iteration. It calls `terminate` to cancel the stream and release the lock, and logs the error. |
 | `ReadableStreamDefaultReader.prototype` | `[Symbol.asyncDispose]` | **Supports the async disposal pattern (`await using`)**. It safely cleans up resources by calling the internal `terminate` function. |
