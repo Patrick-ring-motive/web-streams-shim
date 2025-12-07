@@ -57,57 +57,61 @@
         }
         return obj;
     };
-    
+
     for (const record of [Q(() => Request), Q(() => Response)]) {
         (() => {
-            while(record.__proto__.name === record.name) record = record.__proto__;
+            while (record.__proto__.name === record.name) record = record.__proto__;
             (record?.prototype ?? {}).stream ??= extend(setStrings(function stream() {
                 return this.body;
             }), Q(() => ReadableStream) ?? {});
         })();
     }
-    for (const record of [Q(() => Request), Q(() => Response),Q(()=>Blob)]) {
+    for (const record of [Q(() => Request), Q(() => Response), Q(() => Blob)]) {
         (() => {
-            while(record.__proto__.name === record.name) record = record.__proto__;
-              record.prototype[Symbol.asyncIterator] ??= extend(setStrings(Object.defineProperty(function asyncIterator(){
-                return this.body[Symbol.asyncIterator]();
-              }, 'name', {
-            value: 'Symbol.asyncIterator',
-            configurable: true,
-            writable: true,
-            enumerable: true,
-          })), ReadableStream.prototype[Symbol.asyncIterator]);
-
+            while (record.__proto__.name === record.name) record = record.__proto__;
+            record.prototype[Symbol.asyncIterator] ??= extend(setStrings(Object.defineProperty(function asyncIterator() {
+                return this.stream()[Symbol.asyncIterator]();
+            }, 'name', {
+                value: 'Symbol.asyncIterator',
+                configurable: true,
+                writable: true,
+                enumerable: true,
+            })), ReadableStream.prototype[Symbol.asyncIterator]);
+            record.prototype.values ??= extend(setStrings(function values() {
+                return this[Symbol.asyncIterator]();
+            }), ReadableStream.prototype.values);
         })();
     }
-    if(!('body' in Blob.prototype)){
-      Object.defineProperty(Blob.prototype,'body',{
-        get:extend(setStrings(function body(){return this.stream();},ReadableStream)),
-        set:()=>{},
-        configurable:true,
-        enumerable:true
-      });
+    if (!('body' in Blob.prototype)) {
+        Object.defineProperty(Blob.prototype, 'body', {
+            get: extend(setStrings(function body() {
+                return this.stream();
+            }, ReadableStream)),
+            set: () => {},
+            configurable: true,
+            enumerable: true
+        });
     }
-    if(!('bodyUsed' in Blob.prototype)){
-         Object.defineProperty(record.prototype, "bodyUsed", {
-           get:setStrings(function bodyUsed(){
-             return this.body?.locked;
-           }),
-           set:()=>{},
-           configurable:true,
-           enumerable:true
-         });
+    if (!('bodyUsed' in Blob.prototype)) {
+        Object.defineProperty(record.prototype, "bodyUsed", {
+            get: setStrings(function bodyUsed() {
+                return this.body?.locked;
+            }),
+            set: () => {},
+            configurable: true,
+            enumerable: true
+        });
     }
-    Blob.prototype.blob ?? = extend(setStrings(function blob(){
+    Blob.prototype.blob ?? = extend(setStrings(function blob() {
         return this;
-    }),Blob);
-    Blob.prototype.clone ?? = extend(setStrings(function clone(){
+    }), Blob);
+    Blob.prototype.clone ?? = extend(setStrings(function clone() {
         return this.slice();
-    }),Blob);
-    Blob.prototype.formData ?? = extend(setStrings(function formData(){
+    }), Blob);
+    Blob.prototype.formData ?? = extend(setStrings(function formData() {
         return new Response(this).formData();
-    }),FormData);
-    Blob.prototype.json ?? = extend(setStrings(function json(){
+    }), FormData);
+    Blob.prototype.json ?? = extend(setStrings(function json() {
         return new Response(this).json();
-    }),JSON);
+    }), JSON);
 })();
