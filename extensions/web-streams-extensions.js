@@ -71,7 +71,17 @@
         get:extend(setStrings(function body(){return this.stream();},ReadableStream)),
         set:()=>{},
         configurable:true,
-        enumerable:false
+        enumerable:true
       });
+    }
+    if(!('bodyUsed' in Blob.prototype)){
+         Object.defineProperty(record.prototype, "bodyUsed", {
+           get:setStrings(function bodyUsed(){
+             return this.body?.locked;
+           }),
+           set:()=>{},
+           configurable:true,
+           enumerable:true
+         });
     }
 })();
