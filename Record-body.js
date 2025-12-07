@@ -267,6 +267,14 @@
                 configurable: true,
                 enumerable: true,
             });
+         Object.defineProperty(record.prototype, "bodyUsed", {
+           get:setStrings(function bodyUsed(){
+             return this.body?.locked;
+           }),
+           set:()=>{},
+           configurable:true,
+           enumerable:true
+         });
         })();
 
 
