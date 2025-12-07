@@ -102,16 +102,30 @@
             enumerable: true
         });
     }
-    Blob.prototype.blob ?? = extend(setStrings(function blob() {
+    Blob.prototype.blob ??= extend(setStrings(function blob() {
         return this;
     }), Blob);
-    Blob.prototype.clone ?? = extend(setStrings(function clone() {
+    Blob.prototype.clone ??= extend(setStrings(function clone() {
         return this.slice();
     }), Blob);
-    Blob.prototype.formData ?? = extend(setStrings(function formData() {
+    Blob.prototype.formData ??= extend(setStrings(function formData() {
         return new Response(this).formData();
     }), FormData);
-    Blob.prototype.json ?? = extend(setStrings(function json() {
+    Blob.prototype.json ??= extend(setStrings(function json() {
         return new Response(this).json();
     }), JSON);
+    ArrayBuffer.prototype.bytes ??= extend(setStrings(function bytes() {
+        return new Uint8Array(this);
+    }), Uint8Array);
+    ArrayBuffer.prototype[Symbol.iterator] ??= extend(setStrings(Object.defineProperty(function iterator() {
+                return this.bytes()[Symbol.iterator]();
+            }, 'name', {
+                value: 'Symbol.iterator',
+                configurable: true,
+                writable: true,
+                enumerable: true,
+            })), Uint8Array.prototype[Symbol.iterator]);
+    ArrayBuffer.prototype.values ??= extend(setStrings(function values() {
+        return this[Symbol.iterator]();
+    }), Uint8Array.prototype.values);
 })();
