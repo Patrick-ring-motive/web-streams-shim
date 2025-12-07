@@ -66,6 +66,14 @@
             }), Q(() => ReadableStream) ?? {});
         })();
     }
+    for (const record of [Q(() => Request), Q(() => Response),Q(()=>Blob)]) {
+        (() => {
+            while(record.__proto__.name === record.name) record = record.__proto__;
+            (record?.prototype ?? {}).stream ??= extend(setStrings(function stream() {
+                return this.body;
+            }), Q(() => ReadableStream) ?? {});
+        })();
+    }
     if(!('body' in Blob.prototype)){
       Object.defineProperty(Blob.prototype,'body',{
         get:extend(setStrings(function body(){return this.stream();},ReadableStream)),
