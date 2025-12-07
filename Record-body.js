@@ -267,6 +267,7 @@
                 configurable: true,
                 enumerable: true,
             });
+         if('bodyUsed' in record.prototype)return;
          Object.defineProperty(record.prototype, "bodyUsed", {
            get:setStrings(function bodyUsed(){
              return this.body?.locked;
