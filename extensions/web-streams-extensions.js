@@ -93,7 +93,7 @@
         });
     }
     if (!('bodyUsed' in Blob.prototype)) {
-        Object.defineProperty(record.prototype, "bodyUsed", {
+        Object.defineProperty(Blob.prototype, "bodyUsed", {
             get: setStrings(function bodyUsed() {
                 return this.body?.locked;
             }),
