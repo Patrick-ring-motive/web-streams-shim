@@ -84,4 +84,16 @@
            enumerable:true
          });
     }
+    Blob.prototype.blob ?? = extend(setStrings(function blob(){
+        return this;
+    }),Blob);
+    Blob.prototype.clone ?? = extend(setStrings(function clone(){
+        return this.slice();
+    }),Blob);
+    Blob.prototype.formData ?? = extend(setStrings(function formData(){
+        return new Response(this).formData();
+    }),FormData);
+    Blob.prototype.json ?? = extend(setStrings(function json(){
+        return new Response(this).json();
+    }),JSON);
 })();
