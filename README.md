@@ -30,7 +30,7 @@ The library adds the static method for creating streams from existing data sourc
 | :--- | :--- | :--- |
 | [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) | [`from(obj)`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream/from_static) | **Creates a new `ReadableStream` from any iterable or async iterable object**. It handles both synchronous and asynchronous iterators, including objects that yield `Promise`-like values. |
 
-![Symbol.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStream.from)
+![ReadableStream.from](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStream.from)
 
 ### 3. Fetch and Body Integration Shims
 
