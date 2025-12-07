@@ -1,6 +1,6 @@
 ## Web Streams Shim Library
 
-This README provides an overview of the features in this Web Streams Shim Library, which is designed to create parity between the streaming interfaces within modern runtimes.
+The Web Streams Shim Library is designed to create parity between the streaming interfaces within modern runtimes.
 
 This library provides essential polyfills and shims to ensure modern Web Streams functionality is available and compliant across environments where native support is missing or incomplete, particularly focusing on `ReadableStream`, `Request`, `Response`, and `Blob` objects.
 
