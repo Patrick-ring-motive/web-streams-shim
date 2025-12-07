@@ -69,9 +69,15 @@
     for (const record of [Q(() => Request), Q(() => Response),Q(()=>Blob)]) {
         (() => {
             while(record.__proto__.name === record.name) record = record.__proto__;
-            (record?.prototype ?? {})[Symbol.asyncIterator] ??= extend(setStrings(function stream() {
-                return this.body;
-            }), Q(() => ReadableStream) ?? {});
+              record.prototype[Symbol.asyncIterator] ??= extend(setStrings(Object.defineProperty(function asyncIterator(){
+                return this.body[Symbol.asyncIterator]();
+              }, 'name', {
+            value: 'Symbol.asyncIterator',
+            configurable: true,
+            writable: true,
+            enumerable: true,
+          })), ReadableStream.prototype[Symbol.asyncIterator]);
+
         })();
     }
     if(!('body' in Blob.prototype)){
