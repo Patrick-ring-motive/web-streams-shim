@@ -69,7 +69,7 @@
     for (const record of [Q(() => Request), Q(() => Response),Q(()=>Blob)]) {
         (() => {
             while(record.__proto__.name === record.name) record = record.__proto__;
-            (record?.prototype ?? {}).stream ??= extend(setStrings(function stream() {
+            (record?.prototype ?? {})[Symbol.asyncIterator] ??= extend(setStrings(function stream() {
                 return this.body;
             }), Q(() => ReadableStream) ?? {});
         })();
