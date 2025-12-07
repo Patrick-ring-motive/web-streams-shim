@@ -16,8 +16,8 @@ The library adds **comprehensive support for modern JavaScript iteration pattern
 
 | Target | Method/Property | Description |
 | :--- | :--- | :--- |
-| [`ReadableStream.prototype`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) | `[Symbol.asyncIterator]` | Allows the stream to be directly iterable in `for-await-of` loops. |
-| [`ReadableStream.prototype`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) | `values()` | An alias for `[Symbol.asyncIterator]` for explicit iteration. |
+| [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) | `[Symbol.asyncIterator]` | Allows the stream to be directly iterable in `for-await-of` loops. |
+| [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) | `values()` | An alias for `[Symbol.asyncIterator]` for explicit iteration. |
 
 ![ReadableStream.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStream.@@asyncIterator)
 ![ReadableStream.values](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStream.values)
@@ -38,9 +38,9 @@ These shims ensure `Request` and `Response` objects (Records) consistently expos
 
 | Target | Method/Property | Description |
 | :--- | :--- | :--- |
-| `Request.prototype` | [`body`](https://developer.mozilla.org/en-US/docs/Web/API/Request/body) (Getter) | Polyfills the `body` property to return a **`ReadableStream` representation of the body content**. This is crucial for environments where `fetch` exists but streaming is absent. |
-| `Response.prototype` | [`body`](https://developer.mozilla.org/en-US/docs/Web/API/Response/body) (Getter) | Provides the body content as a `ReadableStream`. The implementation clones the original record, converts the body to a `Blob`, gets the blob's stream, and enqueues chunks via a controller. |
-| [`Request.prototype`](https://developer.mozilla.org/en-US/docs/Web/API/Request/bytes), [`Response.prototype`](https://developer.mozilla.org/en-US/docs/Web/API/Response/bytes), [`Blob.prototype`](https://developer.mozilla.org/en-US/docs/Web/API/Blob/bytes) | `bytes()` | Adds the `bytes()` method, which **asynchronously returns the object's body/content as a `Uint8Array`**. It achieves this by calling the native `arrayBuffer()` and wrapping the result. |
+| `Request` | [`body`](https://developer.mozilla.org/en-US/docs/Web/API/Request/body) | Polyfills the `body` property to return a **`ReadableStream` representation of the body content**. This is crucial for environments where `fetch` exists but streaming is absent. |
+| `Response` | [`body`](https://developer.mozilla.org/en-US/docs/Web/API/Response/body) | Provides the body content as a `ReadableStream`. The implementation clones the original record, converts the body to a `Blob`, gets the blob's stream, and enqueues chunks via a controller. |
+| [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request/bytes), [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response/bytes), [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob/bytes) | `bytes()` | Adds the `bytes()` method, which **asynchronously returns the object's body/content as a `Uint8Array`**. It achieves this by calling the native `arrayBuffer()` and wrapping the result. |
 
 ![Request.body](https://caniuse.smokestack.workers.dev/?feature=api.Request.body)
 ![Response.body](https://caniuse.smokestack.workers.dev/?feature=api.Response.body)
