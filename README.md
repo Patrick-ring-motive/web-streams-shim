@@ -10,7 +10,11 @@ This library provides essential polyfills and shims to ensure modern Web Streams
 
 The library focuses on extending core browser APIs to meet the latest Web Stream and Fetch specifications.
 
-### 1. ReadableStream Async Iteration
+### Conditional Filling
+
+Each polyfill performs feature detection before initializing. If a feature is detected as already present then it is skipped so as not to overwrite native behavior where possible.
+
+### ReadableStream Async Iteration
 
 The library adds **comprehensive support for modern JavaScript iteration patterns** to `ReadableStream` and its readers.
 
@@ -22,7 +26,7 @@ The library adds **comprehensive support for modern JavaScript iteration pattern
 ![ReadableStream.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStream.@@asyncIterator)
 ![ReadableStream.values](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStream.values)
 
-### 2. Stream Construction Utility
+### Stream Construction Utility
 
 The library adds the static method for creating streams from existing data sources.
 
@@ -32,7 +36,7 @@ The library adds the static method for creating streams from existing data sourc
 
 ![ReadableStream.from](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStream.from)
 
-### 3. Body and Bytes Shims
+### Body and Bytes Shims
 
 These shims ensure `Request` and `Response` objects (Records) consistently expose their body as a stream and provide the `bytes()` utility.
 
@@ -48,7 +52,7 @@ These shims ensure `Request` and `Response` objects (Records) consistently expos
 ![Response.bytes](https://caniuse.smokestack.workers.dev/?feature=api.Response.bytes)
 ![Blob.bytes](https://caniuse.smokestack.workers.dev/?feature=api.Blob.bytes)
 
-### 4. Duplex Compliance Shim
+### Duplex Compliance Shim
 
 To satisfy modern `fetch` specifications when streaming request bodies, the library ensures compliance for **half-duplex operations**.
 
@@ -58,7 +62,7 @@ To satisfy modern `fetch` specifications when streaming request bodies, the libr
 
 ![Request.duplex](https://caniuse.smokestack.workers.dev/?feature=api.Request.duplex)
 
-### 5. ReadableStreamDefaultReader Constructor Support
+### ReadableStreamDefaultReader Constructor Support
 
 The library adds support for the `ReadableStreamDefaultReader` constructor.
 
