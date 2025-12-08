@@ -120,6 +120,11 @@
           return reader;
       },_getReader);
     }
+    const _read = ReadableStreamBYOBReader.prototype.read;
+    ReadableStreamBYOBReader.prototype.read = extend(setStrings(async function read(view,options){
+        const chunk = await _read.call(this);
+        return chunk;
+    })),_read);
     const supportsReadableStreamBYOBReaderConstructor = () => {
         try {
             const stream = new ReadableStream({
@@ -145,7 +150,7 @@
         };
         setStrings($ReadableStreamBYOBReader);
         extend($ReadableStreamBYOBReader, _ReadableStreamBYOBReader);
-        globalThis.ReadableStreamBYOBReader = new Proxy($ReadableStreamBYOBReader, Object.setPrototypeOf({
+        $global.ReadableStreamBYOBReader = new Proxy($ReadableStreamBYOBReader, Object.setPrototypeOf({
             construct:Object.setPrototypeOf(function construct(_, [stream]) {
                 return $ReadableStreamBYOBReader(stream);
             },$ReadableStreamBYOBReader.prototype)
