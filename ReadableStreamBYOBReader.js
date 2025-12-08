@@ -74,6 +74,25 @@
         return obj;
     };
 
+    const assign = (target,source) =>{
+        const props = Object.getOwnPropertyDescriptors(source);
+        for(const key in props){
+            try{
+                Object.defineProperty(target,key,props[key]);
+            }catch(e){
+                console.warn(e,key,props[key]);
+            }
+        }
+        for(const key in source){
+            try{
+                target[key] ??= source[key];
+            }catch(e){
+                console.warn(e,key,props[key]);
+            }
+        }
+        return target;
+    };
+
     const supportsReadableStreamBYOBReaderConstructor = () => {
         try {
             const stream = new ReadableStream({
