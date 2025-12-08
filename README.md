@@ -43,8 +43,8 @@ These shims ensure `Request` and `Response` objects (Records) consistently expos
 | Target | Method/Property | Description |
 | :--- | :--- | :--- |
 | [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request/body) | [`body`](https://developer.mozilla.org/en-US/docs/Web/API/Request/body) | Polyfills the `body` property to return a **`ReadableStream` representation of the body content**. This is crucial for environments where `fetch` exists but streaming is absent. |
-| [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response/body)  | [`body`](https://developer.mozilla.org/en-US/docs/Web/API/Response/body) | Provides the body content as a `ReadableStream`. The implementation clones the original record, converts the body to a `Blob`, gets the blob's stream, and enqueues chunks via a controller. |
-| [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request/bytes), [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response/bytes), [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob/bytes) | [`bytes()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | Adds the `bytes()` method, which **asynchronously returns the object's body/content as a `Uint8Array`**. It achieves this by calling the native `arrayBuffer()` and wrapping the result. |
+| [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response/body)  | [`body`](https://developer.mozilla.org/en-US/docs/Web/API/Response/body) | Provides the body content as a `ReadableStream`. |
+| [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request/bytes), [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response/bytes), [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob/bytes) | [`bytes()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | Adds the `bytes()` method, which **asynchronously returns the object's body/content as a `Uint8Array`**. |
 
 ![Request.body](https://caniuse.smokestack.workers.dev/?feature=api.Request.body)
 ![Response.body](https://caniuse.smokestack.workers.dev/?feature=api.Response.body)
@@ -54,7 +54,7 @@ These shims ensure `Request` and `Response` objects (Records) consistently expos
 
 ### Duplex Compliance Shim
 
-To satisfy modern `fetch` specifications when streaming request bodies, the library ensures compliance for **half-duplex operations**.
+To satisfy modern `fetch` specifications when streaming request bodies, the library ensures compliance for **half-duplex operations**. This is in many ways a reverse shim as it allows legacy code to continue to work in the absence of a duplex parameter that did not exist when the code was implemented.
 
 *   **Property Injection:** The `duplex: 'half'` property is added to the prototypes of `Request`, `Response`, `ReadableStream`, and `Blob`.
 *   **Constructor Wrapping:** The global `Request` and `Response` constructors are subclassed and **wrapped** to automatically apply `duplex: 'half'` utility function to all arguments passed during instantiation.
