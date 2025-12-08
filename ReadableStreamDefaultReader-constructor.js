@@ -4,6 +4,7 @@
             return fn?.()
         } catch {}
     };
+    const $global = Q(()=>globalThis) ?? Q(()=>global) ?? Q(()=>self) ?? Q(()=>window) ?? this;
     const constructPrototype = newClass => {
         try {
             if (newClass?.prototype) return newClass;
@@ -98,12 +99,12 @@
         };
         setStrings($ReadableStreamDefaultReader);
         extend($ReadableStreamDefaultReader, _ReadableStreamDefaultReader);
-        globalThis.ReadableStreamDefaultReader = new Proxy($ReadableStreamDefaultReader, Object.setPrototypeOf({
+        $global.ReadableStreamDefaultReader = new Proxy($ReadableStreamDefaultReader, Object.setPrototypeOf({
             construct:Object.setPrototypeOf(function construct(_, [stream]) {
                 return $ReadableStreamDefaultReader(stream)
             },$ReadableStreamDefaultReader.prototype)
         },$ReadableStreamDefaultReader));
-        globalThis.ReadableStreamDefaultReader.prototype.constructor = globalThis.ReadableStreamDefaultReader
+        $global.ReadableStreamDefaultReader.prototype.constructor = $global.ReadableStreamDefaultReader
     }
 
 })();
