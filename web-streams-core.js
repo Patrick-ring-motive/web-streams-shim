@@ -739,7 +739,7 @@
         - Creates a new Request class that extends the original but processes arguments
           */
         (() => {
-            let $Request = Request;
+            const $Request = Request;
 
 
             /**
@@ -752,13 +752,13 @@
              *   body: new ReadableStream() 
              * }); // ReadableStream automatically gets duplex: 'half'
              */
-            $Request = class Request extends $Request {
+            const _Request = class Request extends $Request {
                 constructor(...args) {
                     super(...args.map(duplexHalf));
                 }
             };
 
-            $global.Request = $Request;
+            $global.Request = _Request;
 
 
         })();
