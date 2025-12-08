@@ -120,6 +120,7 @@
           return reader;
       },_getReader);
     }
+    extend(ReadableStreamBYOBReader,ReadableStreamDefaultReader);
     const _read = ReadableStreamBYOBReader.prototype.read;
 ReadableStreamBYOBReader.prototype.read = extend(setStrings(async function read(view) {
     // If no view is provided, fall back to default behavior
@@ -173,7 +174,7 @@ ReadableStreamBYOBReader.prototype.read = extend(setStrings(async function read(
                 type:'bytes'
             });
             const reader = new ReadableStreamBYOBReader(stream);
-            reader.read();
+            reader.read(new Uint8Array([0]));
             return true;
         } catch {
             return false;
