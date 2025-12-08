@@ -131,7 +131,7 @@ ReadableStreamBYOBReader.prototype.read = extend(setStrings(async function read(
     const result = await _read.call(this);
     
     // If done, return with the view and done flag
-    if (result.done) {
+    if (result.done != false) {
         return { value: view, done: true };
     }
     
