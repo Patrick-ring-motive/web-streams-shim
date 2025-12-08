@@ -94,17 +94,17 @@
 
     if (!supportsReadableStreamBYOBReaderConstructor()) {
         const _ReadableStreamBYOBReader = $global.ReadableStreamBYOBReader;
-        const $ReadableStreamBYOBReader = function ReadableStreamDefaultReader(stream) {
+        const $ReadableStreamBYOBReader = function ReadableStreamBYOBReader(stream) {
             return Object.setPrototypeOf(stream.getReader(), $global.ReadableStreamBYOBReader.prototype);
         };
-        setStrings($ReadableStreamDefaultReader);
-        extend($ReadableStreamDefaultReader, _ReadableStreamBYOBReader);
+        setStrings($ReadableStreamBYOBReader);
+        extend($ReadableStreamBYOBReader, _ReadableStreamBYOBReader);
         globalThis.ReadableStreamBYOBReader = new Proxy($ReadableStreamBYOBReader, Object.setPrototypeOf({
             construct:Object.setPrototypeOf(function construct(_, [stream]) {
-                return $ReadableStreamDefaultReader(stream)
-            },$ReadableStreamDefaultReader.prototype)
-        },$ReadableStreamDefaultReader));
-        globalThis.ReadableStreamDefaultReader.prototype.constructor = globalThis.ReadableStreamDefaultReader
+                return $ReadableStreamBYOBReader(stream);
+            },$ReadableStreamBYOBReader.prototype)
+        },$ReadableStreamBYOBReader));
+        $global.ReadableStreamBYOBReader.prototype.constructor = $global.ReadableStreamBYOBReader;
     }
 
 })();
