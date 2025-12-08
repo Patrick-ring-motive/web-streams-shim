@@ -74,15 +74,16 @@
         return obj;
     };
 
-    const supportsReadableStreamDefaultReaderConstructor = () => {
+    const supportsReadableStreamBYOBReaderConstructor = () => {
         try {
             const stream = new ReadableStream({
                 start(controller) {
                     controller.enqueue('test');
                     controller.close();
-                }
+                },
+                type:'bytes'
             });
-            const reader = new ReadableStreamDefaultReader(stream);
+            const reader = new ReadableStreamBYOBReader(stream);
             reader.read();
             return true;
         } catch {
@@ -91,14 +92,14 @@
     }
 
 
-    if (!supportsReadableStreamDefaultReaderConstructor()) {
-        const _ReadableStreamDefaultReader = globalThis.ReadableStreamDefaultReader;
-        const $ReadableStreamDefaultReader = function ReadableStreamDefaultReader(stream) {
-            return Object.setPrototypeOf(stream.getReader(), globalThis.ReadableStreamDefaultReader.prototype);
+    if (!supportsReadableStreamBYOBReaderConstructor()) {
+        const _ReadableStreamBYOBReader = $global.ReadableStreamBYOBReader;
+        const $ReadableStreamBYOBReader = function ReadableStreamDefaultReader(stream) {
+            return Object.setPrototypeOf(stream.getReader(), $global.ReadableStreamBYOBReader.prototype);
         };
         setStrings($ReadableStreamDefaultReader);
-        extend($ReadableStreamDefaultReader, _ReadableStreamDefaultReader);
-        globalThis.ReadableStreamDefaultReader = new Proxy($ReadableStreamDefaultReader, Object.setPrototypeOf({
+        extend($ReadableStreamDefaultReader, _ReadableStreamBYOBReader);
+        globalThis.ReadableStreamBYOBReader = new Proxy($ReadableStreamBYOBReader, Object.setPrototypeOf({
             construct:Object.setPrototypeOf(function construct(_, [stream]) {
                 return $ReadableStreamDefaultReader(stream)
             },$ReadableStreamDefaultReader.prototype)
