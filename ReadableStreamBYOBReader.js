@@ -115,10 +115,10 @@
     ReadableStreamBYOBReader.prototype.read = extend(setStrings(async function read(view) {
       // If no view is provided, fall back to default behavior
       if (!view) {
-        return _read.call(this);
+        return _read.call(this,view);
       }
       // Read from the underlying stream (default reader behavior)
-      const result = await _read.call(this);
+      const result = await _read.call(this,view);
       // If done, return with the view and done flag
       if (result.done != false) {
         return {
