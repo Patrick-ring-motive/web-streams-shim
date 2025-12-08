@@ -123,6 +123,7 @@
     const _read = ReadableStreamBYOBReader.prototype.read;
     ReadableStreamBYOBReader.prototype.read = extend(setStrings(async function read(view,options){
         const chunk = await _read.call(this);
+        // wut
         return chunk;
     })),_read);
     const supportsReadableStreamBYOBReaderConstructor = () => {
