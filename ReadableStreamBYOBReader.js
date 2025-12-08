@@ -121,11 +121,48 @@
       },_getReader);
     }
     const _read = ReadableStreamBYOBReader.prototype.read;
-    ReadableStreamBYOBReader.prototype.read = extend(setStrings(async function read(view,options){
-        const chunk = await _read.call(this);
-        // wut
-        return chunk;
-    })),_read);
+ReadableStreamBYOBReader.prototype.read = extend(setStrings(async function read(view) {
+    // If no view is provided, fall back to default behavior
+    if (!view) {
+        return _read.call(this);
+    }
+    
+    // Read from the underlying stream (default reader behavior)
+    const result = await _read.call(this);
+    
+    // If done, return with the view and done flag
+    if (result.done) {
+        return { value: view, done: true };
+    }
+    
+    // Convert the chunk to Uint8Array if needed
+    const chunk = result.value instanceof Uint8Array 
+        ? result.value 
+        : new Uint8Array(result.value);
+    
+    // Determine how much data we can copy
+    const bytesToCopy = Math.min(chunk.byteLength, view.byteLength);
+    
+    // Create a temporary view to copy into the provided view
+    const targetView = new Uint8Array(
+        view.buffer,
+        view.byteOffset,
+        view.byteLength
+    );
+    
+    // Copy the data into the provided buffer
+    targetView.set(chunk.subarray(0, bytesToCopy), 0);
+    
+    // Create a view of the filled portion
+    const filledView = new view.constructor(
+        view.buffer,
+        view.byteOffset,
+        bytesToCopy
+    );
+    
+    return { value: filledView, done: false };
+}), _read);
+
     const supportsReadableStreamBYOBReaderConstructor = () => {
         try {
             const stream = new ReadableStream({
