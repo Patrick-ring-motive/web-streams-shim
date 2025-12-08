@@ -4,6 +4,7 @@
             return fn?.()
         } catch {}
     };
+    const $global = Q(()=>globalThis) ?? Q(()=>global) ?? Q(()=>self) ?? Q(()=>window) ?? this;
     const constructPrototype = newClass => {
         try {
             if (newClass?.prototype) return newClass;
@@ -101,16 +102,16 @@
         Object.setPrototypeOf(clone,Object.getPrototypeOf($class));
         return clone;
     };
-
-    $global.ReadableStreamBYOBReader ??= cloneClass(ReadableStreamDefaultReader);
-    Object.defineProperty(ReadableStreamBYOBReader,'name',{
+    if(!$global.ReadableStreamBYOBReader){
+      $global.ReadableStreamBYOBReader ??= cloneClass(ReadableStreamDefaultReader);
+      Object.defineProperty(ReadableStreamBYOBReader,'name',{
         value:'ReadableStreamBYOBReader',
         enumerable:true,
         configurable:true,
         writable:true
-    });
-    setStrings(ReadableStreamBYOBReader);
-    
+      });
+      setStrings(ReadableStreamBYOBReader);
+    }
     const supportsReadableStreamBYOBReaderConstructor = () => {
         try {
             const stream = new ReadableStream({
