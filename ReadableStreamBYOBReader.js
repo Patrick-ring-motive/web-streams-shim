@@ -93,6 +93,24 @@
         return target;
     };
 
+    const cloneClass = $class =>{
+        const clonePrototype = assign({},$class.prototype);
+        const clone = $class.bind(clonePrototype);
+        assign(clone,$class);
+        clone.prototype = Object.setPrototypeOf(clonePrototype,Object.getPrototypeOf($class.prototype));
+        Object.setPrototypeOf(clone,Object.getPrototypeOf($class));
+        return clone;
+    };
+
+    $global.ReadableStreamBYOBReader ??= cloneClass(ReadableStreamDefaultReader);
+    Object.defineProperty(ReadableStreamBYOBReader,'name',{
+        value:'ReadableStreamBYOBReader',
+        enumerable:true,
+        configurable:true,
+        writable:true
+    });
+    setStrings(ReadableStreamBYOBReader);
+    
     const supportsReadableStreamBYOBReaderConstructor = () => {
         try {
             const stream = new ReadableStream({
