@@ -32,7 +32,7 @@ The library adds the static method for creating streams from existing data sourc
 
 ![ReadableStream.from](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStream.from)
 
-### 3. Fetch and Body Integration Shims
+### 3. Body and Bytes Shims
 
 These shims ensure `Request` and `Response` objects (Records) consistently expose their body as a stream and provide the `bytes()` utility.
 
