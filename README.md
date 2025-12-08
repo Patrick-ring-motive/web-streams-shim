@@ -1,6 +1,6 @@
-## Web Streams Shim Library
+## Web Streams Shim
 
-The Web Streams Shim Library is designed to create parity between the streaming interfaces within modern runtimes. This does not polyfill the interfaces if they are missing entirely. For that you will want [web-streams-polyfill](https://www.npmjs.com/package/web-streams-polyfill) which is not affiliated with the project.
+🛶 Web Streams Shim is designed to create parity between the streaming interfaces within modern runtimes. This does not polyfill the interfaces if they are missing entirely. For that you will want [web-streams-polyfill](https://www.npmjs.com/package/web-streams-polyfill) which is not affiliated with the project.
 
 This library provides essential polyfills and shims to ensure modern Web Streams functionality is available and compliant across environments where native support is missing or incomplete, particularly focusing on `ReadableStream`, `Request`, `Response`, and `Blob` objects.
 
