@@ -167,7 +167,7 @@ ReadableStreamBYOBReader.prototype.read = extend(setStrings(async function read(
         try {
             const stream = new ReadableStream({
                 start(controller) {
-                    controller.enqueue('test');
+                    controller.enqueue(new Uint8Array([0]));
                     controller.close();
                 },
                 type:'bytes'
