@@ -16,7 +16,7 @@ The library adds **comprehensive support for modern JavaScript iteration pattern
 
 | Target | Method/Property | Description |
 | :--- | :--- | :--- |
-| [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) | `[Symbol.asyncIterator]` | Allows the stream to be directly iterable in `for-await-of` loops. |
+| [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) | [`[Symbol.asyncIterator]`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncIterator) | Allows the stream to be directly iterable in `for-await-of` loops. |
 | [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) | `values()` | An alias for `[Symbol.asyncIterator]` for explicit iteration. |
 
 ![ReadableStream.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStream.@@asyncIterator)
