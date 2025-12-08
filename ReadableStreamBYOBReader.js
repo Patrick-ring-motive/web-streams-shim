@@ -157,7 +157,7 @@
     } catch {
       return false;
     }
-  }
+  };
   if (!supportsReadableStreamBYOBReaderConstructor()) {
     const _ReadableStreamBYOBReader = $global.ReadableStreamBYOBReader;
     const $ReadableStreamBYOBReader = function ReadableStreamBYOBReader(stream) {
