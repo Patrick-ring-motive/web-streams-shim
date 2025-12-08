@@ -40,7 +40,7 @@ These shims ensure `Request` and `Response` objects (Records) consistently expos
 | :--- | :--- | :--- |
 | `Request` | [`body`](https://developer.mozilla.org/en-US/docs/Web/API/Request/body) | Polyfills the `body` property to return a **`ReadableStream` representation of the body content**. This is crucial for environments where `fetch` exists but streaming is absent. |
 | `Response` | [`body`](https://developer.mozilla.org/en-US/docs/Web/API/Response/body) | Provides the body content as a `ReadableStream`. The implementation clones the original record, converts the body to a `Blob`, gets the blob's stream, and enqueues chunks via a controller. |
-| [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request/bytes), [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response/bytes), [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob/bytes) | `bytes()` | Adds the `bytes()` method, which **asynchronously returns the object's body/content as a `Uint8Array`**. It achieves this by calling the native `arrayBuffer()` and wrapping the result. |
+| [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request/bytes), [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response/bytes), [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob/bytes) | [`bytes()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | Adds the `bytes()` method, which **asynchronously returns the object's body/content as a `Uint8Array`**. It achieves this by calling the native `arrayBuffer()` and wrapping the result. |
 
 ![Request.body](https://caniuse.smokestack.workers.dev/?feature=api.Request.body)
 ![Response.body](https://caniuse.smokestack.workers.dev/?feature=api.Response.body)
