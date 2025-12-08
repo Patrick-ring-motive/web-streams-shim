@@ -111,6 +111,14 @@
         writable:true
       });
       setStrings(ReadableStreamBYOBReader);
+      const _getReader = ReadableStream.prototype.getReader;
+      ReadableStream.prototype.getReader = Object.setPrototypeOf(function getReader(options){
+          const reader = _getReader.call(this);
+          if(options?.mode == 'byob'){
+              Object.setPrototypeOf(reader,ReadableStreamBYOBReader);
+          }
+          return reader;
+      },_getReader);
     }
     const supportsReadableStreamBYOBReaderConstructor = () => {
         try {
