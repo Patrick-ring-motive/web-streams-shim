@@ -9,7 +9,7 @@ This library provides essential polyfills and shims to ensure modern Web Streams
 At the top of your web page put
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/web-streams-shim@1.0.4/web-streams-core.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/web-streams-shim/web-streams-core.js"></script>
 ```
 
 Dynamic import
@@ -83,3 +83,5 @@ The library adds support for the `ReadableStreamDefaultReader` constructor.
 | [`ReadableStreamDefaultReader`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamDefaultReader) | [`constructor(stream)`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamDefaultReader/ReadableStreamDefaultReader) | **Polyfills the `ReadableStreamDefaultReader` constructor** to accept a stream directly. In environments where the native constructor doesn't support this (like Bun), it delegates to `stream.getReader()` and properly sets up the prototype chain. This allows `new ReadableStreamDefaultReader(stream)` to work consistently across all runtimes. |
 
 ![ReadableStreamDefaultReader.constructor](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStreamDefaultReader.constructor)
+
+![🛶](https://cdn.jsdelivr.net/npm/web-streams-shim/web-streams-core.js)
