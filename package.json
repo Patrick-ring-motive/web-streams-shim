@@ -29,7 +29,8 @@
     "read",
     "getReader",
     "from",
-    "controller"
+    "controller",
+    "prototype"
   ],
   "license": "ISC",
   "dependencies": {
