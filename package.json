@@ -22,10 +22,13 @@
     "ReadableStreamDefaultReader",
     "duplex",
     "half",
+    "construct",
     "constructor",
     "reader",
     "read",
-    "getReader"
+    "getReader",
+    "from",
+    "controller"
   ],
   "license": "ISC",
   "dependencies": {
