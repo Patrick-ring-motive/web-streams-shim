@@ -30,7 +30,11 @@
     "getReader",
     "from",
     "controller",
-    "prototype"
+    "prototype",
+    "web-streams",
+    "shim",
+    "polyfill",
+    "ponyfill"
   ],
   "license": "ISC",
   "dependencies": {
