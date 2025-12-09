@@ -84,4 +84,4 @@ The library adds support for the `ReadableStreamDefaultReader` constructor.
 
 ![ReadableStreamDefaultReader.constructor](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStreamDefaultReader.constructor)
 
-![🛶](https://cdn.jsdelivr.net/npm/web-streams-shim/web-streams-core.js)
+![🛶](https://cdn.jsdelivr.net/npm/web-streams-shim/web-streams-core.js "🛶")
