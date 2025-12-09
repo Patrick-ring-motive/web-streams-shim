@@ -16,12 +16,16 @@
     "Blob",
     "async",
     "iterator",
+    "iterable",
     "asyncIterator",
     "body",
     "ReadableStreamDefaultReader",
     "duplex",
     "half",
-    "constructor"
+    "constructor",
+    "reader",
+    "read",
+    "getReader"
   ],
   "license": "ISC",
   "dependencies": {
