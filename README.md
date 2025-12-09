@@ -10,7 +10,7 @@ This library provides essential polyfills and shims to ensure modern Web Streams
 <script src="https://cdn.jsdelivr.net/npm/web-streams-shim@1.0.4/web-streams-core.js"></script>
 ```
 
-[```await import('https://cdn.jsdelivr.net/npm/web-streams-shim@1.0.4/web-streams-core.js')```](https://cdn.jsdelivr.net/npm/web-streams-shim@1.0.4/web-streams-core.js)
+`await import('[https://cdn.jsdelivr.net/npm/web-streams-shim@1.0.4/web-streams-core.js](https://cdn.jsdelivr.net/npm/web-streams-shim@1.0.4/web-streams-core.js)')`
 ***
 
 ## Key Features and Polyfills
