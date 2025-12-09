@@ -20,6 +20,7 @@
     "asyncIterator",
     "body",
     "ReadableStreamDefaultReader",
+    "ReadableStreamDefaultController",
     "duplex",
     "half",
     "construct",
