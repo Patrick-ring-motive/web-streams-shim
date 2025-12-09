@@ -20,7 +20,7 @@ Dynamic import
 
 ## Key Features and Polyfills
 
-The library focuses on extending core browser APIs to meet the latest Web Stream and Fetch specifications.
+The library focuses on extending core browser APIs to meet the latest Web Stream and Fetch specifications. Compatibility tables are generated dynamically from mdn's caniuse api.
 
 ### Conditional Filling
 
