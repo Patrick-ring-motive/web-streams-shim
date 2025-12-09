@@ -13,7 +13,15 @@
     "Request",
     "Response",
     "fetch",
-    "Blob"
+    "Blob",
+    "async",
+    "iterator",
+    "asyncIterator",
+    "body",
+    "ReadableStreamDefaultReader",
+    "duplex",
+    "half",
+    "constructor"
   ],
   "license": "ISC",
   "dependencies": {
