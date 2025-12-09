@@ -14,7 +14,7 @@ At the top of your web page put
 
 Dynamic import
 
-`await import('`[https://cdn.jsdelivr.net/npm/web-streams-shim@1.0.4/web-streams-core.js](https://cdn.jsdelivr.net/npm/web-streams-shim@1.0.4/web-streams-core.js)`');`
+`await import('`[https://cdn.jsdelivr.net/npm/web-streams-shim/web-streams-core.js](https://cdn.jsdelivr.net/npm/web-streams-shim/web-streams-core.js)`');`
 
 ***
 
