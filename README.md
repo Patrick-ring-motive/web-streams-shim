@@ -4,6 +4,12 @@
 
 This library provides essential polyfills and shims to ensure modern Web Streams functionality is available and compliant across environments where native support is missing or incomplete, particularly focusing on `ReadableStream`, `Request`, `Response`, and `Blob` objects.
 
+## Install
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/web-streams-shim@1.0.4/web-streams-core.js"></script>
+```
+
 ***
 
 ## Key Features and Polyfills
