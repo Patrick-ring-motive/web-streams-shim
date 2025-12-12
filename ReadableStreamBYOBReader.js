@@ -172,4 +172,125 @@
     }, $ReadableStreamBYOBReader));
     $global.ReadableStreamBYOBReader.prototype.constructor = $global.ReadableStreamBYOBReader;
   }
+   if (!$global.ReadableStreamBYOBRequest) {
+        
+        class ReadableStreamBYOBRequest {
+            #controller;
+            #view;
+            #responded = false;
+
+            constructor(controller, view) {
+                this.#controller = controller;
+                this.#view = view;
+            }
+
+            get view() {
+                return this.#responded ? null : this.#view;
+            }
+
+            respond(bytesWritten) {
+                if (this.#responded) {
+                    throw new TypeError('This BYOB request has already been responded to');
+                }
+                this.#responded = true;
+                
+                const filledView = new this.#view.constructor(
+                    this.#view.buffer,
+                    this.#view.byteOffset,
+                    bytesWritten
+                );
+                
+                this.#controller.enqueue(filledView);
+            }
+
+            respondWithNewView(view) {
+                if (this.#responded) {
+                    throw new TypeError('This BYOB request has already been responded to');
+                }
+                this.#responded = true;
+                this.#controller.enqueue(view);
+            }
+        }
+
+        setStrings(ReadableStreamBYOBRequest);
+        $global.ReadableStreamBYOBRequest = ReadableStreamBYOBRequest;
+
+        // Symbols to link streams and controllers
+        const $stream = Symbol('*stream');
+        const $controller = Symbol('*controller');
+        const controllerPendingViews = new WeakMap();
+
+        // Add byobRequest property to default controller
+        if (!('byobRequest' in ReadableStreamDefaultController.prototype)) {
+            Object.defineProperty(ReadableStreamDefaultController.prototype, 'byobRequest', {
+                get: extend(setStrings(function byobRequest() {
+                    const view = controllerPendingViews.get(this);
+                    if (view) {
+                        return new ReadableStreamBYOBRequest(this, view);
+                    }
+                    return null;
+                }), ReadableStreamBYOBRequest),
+                configurable: true,
+                enumerable: true
+            });
+        }
+
+        // Wrap ReadableStream constructor
+        const _ReadableStream = ReadableStream;
+        
+        $global.ReadableStream = extend(setStrings(function ReadableStream(underlyingSource = {}, strategy) {
+            const $this = this;
+            
+            if (underlyingSource?.type === 'bytes') {
+                const wrappedSource = Object.assign({}, underlyingSource);
+                const originalStart = underlyingSource.start;
+                const originalPull = underlyingSource.pull;
+                
+                wrappedSource.start = extend(setStrings(function start(controller) {
+                    controller[$stream] = $this;
+                    $this[$controller] = controller;
+                    return originalStart?.call(this, controller);
+                }), originalStart ?? ReadableStreamDefaultController);
+                
+                wrappedSource.pull = extend(setStrings(function pull(controller) {
+                    controller[$stream] = $this;
+                    $this[$controller] = controller;
+                    return originalPull?.call(this, controller);
+                }), originalPull ?? ReadableStreamDefaultController);
+                
+                const stream = new _ReadableStream(wrappedSource, strategy);
+                return Object.setPrototypeOf($this, stream);
+            }
+            
+            return new _ReadableStream(underlyingSource, strategy);
+        }), _ReadableStream);
+        
+        // Patch getReader to connect BYOB readers with controllers
+        const _getReader = $global.ReadableStream.prototype.getReader;
+        $global.ReadableStream.prototype.getReader = extend(setStrings(function getReader(options) {
+            const reader = _getReader.call(this, options);
+            
+            if (options?.mode === 'byob') {
+                const _read = reader.read;
+                
+                reader.read = extend(setStrings(async function read(view) {
+                    const controller = this[$controller] ?? reader[$controller] ?? this[$stream]?.[$controller];
+                    
+                    if (controller && view) {
+                        controllerPendingViews.set(controller, view);
+                    }
+                    
+                    const result = await _read.call(this, view);
+                    
+                    if (controller) {
+                        controllerPendingViews.delete(controller);
+                    }
+                    
+                    return result;
+                }), _read);
+            }
+            
+            return reader;
+        }), _getReader);
+    }
 })();
