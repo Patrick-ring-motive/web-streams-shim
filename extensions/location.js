@@ -1,6 +1,6 @@
 if(typeof Location === 'undefined'){
 // Sham Location class extending URL
-class Location extends URL {
+globalThis.Location = class Location extends URL {
   constructor(href, base) {
     super(href, base);
   }
