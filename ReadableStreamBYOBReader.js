@@ -174,41 +174,48 @@
   }
    if (!$global.ReadableStreamBYOBRequest) {
         
+        const protectedProp = (obj, key, value) =>
+        Object.defineProperty(obj, `&${key}`, {
+            value,
+            writable: true,
+            enumerable: false,
+            configurable: true,
+        });
+    
+    if (!$global.ReadableStreamBYOBRequest) {
+        
         class ReadableStreamBYOBRequest {
-            #controller;
-            #view;
-            #responded = false;
-
             constructor(controller, view) {
-                this.#controller = controller;
-                this.#view = view;
+                protectedProp(this, 'controller', controller);
+                protectedProp(this, 'view', view);
+                protectedProp(this, 'responded', false);
             }
 
             get view() {
-                return this.#responded ? null : this.#view;
+                return this['&responded'] ? null : this['&view'];
             }
 
             respond(bytesWritten) {
-                if (this.#responded) {
+                if (this['&responded']) {
                     throw new TypeError('This BYOB request has already been responded to');
                 }
-                this.#responded = true;
+                this['&responded'] = true;
                 
-                const filledView = new this.#view.constructor(
-                    this.#view.buffer,
-                    this.#view.byteOffset,
+                const filledView = new this['&view'].constructor(
+                    this['&view'].buffer,
+                    this['&view'].byteOffset,
                     bytesWritten
                 );
                 
-                this.#controller.enqueue(filledView);
+                this['&controller'].enqueue(filledView);
             }
 
             respondWithNewView(view) {
-                if (this.#responded) {
+                if (this['&responded']) {
                     throw new TypeError('This BYOB request has already been responded to');
                 }
-                this.#responded = true;
-                this.#controller.enqueue(view);
+                this['&responded'] = true;
+                this['&controller'].enqueue(view);
             }
         }
 
@@ -292,5 +299,6 @@
             
             return reader;
         }), _getReader);
+    }
     }
 })();
