@@ -9,21 +9,21 @@ globalThis.File = class File extends Blob {
     super(bits, blobOptions);
     
     // Add File-specific properties
-    this._name = filename;
-    this._lastModified = lastModified;
-    this._lastModifiedDate = new Date(lastModified);
+    this['&name'] = filename;
+    this['&lastModified'] = lastModified;
+    this['&lastModifiedDate'] = new Date(lastModified);
   }
 
   get name() {
-    return this._name;
+    return this['&name'];
   }
 
   get lastModified() {
-    return this._lastModified;
+    return this['&lastModified'];
   }
 
   get lastModifiedDate() {
-    return this._lastModifiedDate;
+    return this['&lastModifiedDate'];
   }
 
   get webkitRelativePath() {
