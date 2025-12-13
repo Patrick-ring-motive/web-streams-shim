@@ -5,6 +5,7 @@
             return fn?.()
         } catch {}
     };
+    const $global = Q(() => globalThis) ?? Q(() => global) ?? Q(() => self) ?? Q(() => window) ?? this;
     const constructPrototype = newClass => {
         try {
             if (newClass?.prototype) return newClass;
