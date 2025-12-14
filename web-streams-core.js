@@ -1,7 +1,11 @@
 (() => {
     // **TESTING FLAG**: Set to true to force enable all polyfills regardless of feature detection
-    const FORCE_POLYFILLS = false;
-    
+    let FORCE_POLYFILLS = false;
+    try{
+        if(location.href.includes('test.html')){
+            FORCE_POLYFILLS = true;
+        }
+    }catch{}
     const Q = fn => {
         try {
             return fn?.()
