@@ -66,7 +66,7 @@
         }
         for (const str of ['toString', 'toLocaleString', Symbol.toStringTag]) {
             Object.defineProperty(obj, str, {
-                value: makeStringer(`$type ${obj.name} { [polyfill code] }`),
+                value: makeStringer(`${type} ${obj.name} { [polyfill code] }`),
                 configurable: true,
                 writable: true,
                 enumerable: false,
