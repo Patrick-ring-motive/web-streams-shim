@@ -53,10 +53,17 @@
         return stringer;
     };
 
-    const setStrings = (obj, name) => {
+    const setStrings = (obj) => {
+        let type = 'function';
+        if(String(obj).trim().startsWith('async')){
+            type = 'async function';
+        }
+        if(String(obj).trim().startsWith('class')){
+            type = 'class';
+        }
         for (const str of ['toString', 'toLocaleString', Symbol.toStringTag]) {
             Object.defineProperty(obj, str, {
-                value: makeStringer(`function ${obj.name}() { [polyfill code] }`),
+                value: makeStringer(`$type ${obj.name} { [polyfill code] }`),
                 configurable: true,
                 writable: true,
                 enumerable: false,
