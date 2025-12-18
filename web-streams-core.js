@@ -55,10 +55,10 @@
 
     const setStrings = (obj) => {
         let type = 'function';
-        if(String(obj).trim().startsWith('async')){
+        if(String(obj).trim().startsWith('async')||/async/i.test(obj?.name)){
             type = 'async function';
         }
-        if(String(obj).trim().startsWith('class')){
+        if(String(obj).trim().startsWith('class')||/^[A-Z]|^.[A-Z]/.test(obj?.name)){
             type = 'class';
         }
         for (const str of ['toString', 'toLocaleString', Symbol.toStringTag]) {
