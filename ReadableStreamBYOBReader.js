@@ -152,7 +152,7 @@
         type: 'bytes'
       });
       const reader = new ReadableStreamBYOBReader(stream);
-      reader.read(new Uint8Array([0]));
+      reader.read(new Uint8Array([0])).catch(()=>{});
       return true;
     } catch {
       return false;
@@ -299,6 +299,20 @@
             
             return reader;
         }), _getReader);
+        const _closed = Object.getOwnPropertyDescriptor($global.ReadableStreamDefaultReader.prototype,'closed')?.get;
+        if(_closed){
+          Object.defineProperty($global.ReadableStreamDefaultReader.prototype,'closed',{
+            get:extend(setStrings(async function closed() {
+                try{
+                  return await _closed.call(this);
+                }catch(e){
+                  console.warn(e);
+                }
+            }), _closed),
+            enumerable:false,
+            configurable:true
+          });
+        }
     }
     }
 })();
