@@ -315,7 +315,9 @@
 
                 return reader;
             }), _getReader);
-
+            if(typeof ReadableByteStreamController === 'undefined'){
+                $global.ReadableByteStreamContoller = class ReadableByteStreamContoller extends ReadableStreamDefaultController{};
+            }
         }
     }
 })();
