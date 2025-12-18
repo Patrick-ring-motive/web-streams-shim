@@ -57,9 +57,16 @@
     - @private
       */
     const setStrings = (obj) => {
+        let type = 'function';
+        if(String(obj).trim().startsWith('async')){
+            type = 'async function';
+        }
+        if(String(obj).trim().startsWith('class')){
+            type = 'class';
+        }
         for (const str of ['toString', 'toLocaleString', Symbol.toStringTag]) {
             Object.defineProperty(obj, str, {
-                value: makeStringer(`function ${obj.name}() { [polyfill code] }`),
+                value: makeStringer(`$type ${obj.name} { [polyfill code] }`),
                 configurable: true,
                 writable: true,
                 enumerable: false,
@@ -316,7 +323,7 @@
                 return reader;
             }), _getReader);
             if(typeof ReadableByteStreamController === 'undefined'){
-                $global.ReadableByteStreamContoller = class ReadableByteStreamContoller extends ReadableStreamDefaultController{};
+                $global.ReadableByteStreamContoller = setStrings(class ReadableByteStreamContoller extends ReadableStreamDefaultController{});
             }
         }
     }
