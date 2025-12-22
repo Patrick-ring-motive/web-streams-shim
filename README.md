@@ -47,7 +47,7 @@ The library adds **comprehensive support for modern JavaScript iteration pattern
 
 The library adds the static method for creating streams from existing data sources.
 
-| Target | Method/Property | Description |
+| | |  |
 | :--- | :--- | :--- |
 | [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) | [`from(obj)`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream/from_static) | **Creates a new `ReadableStream` from any iterable or async iterable object**. It handles both synchronous and asynchronous iterators, including objects that yield `Promise`-like values. |
 
