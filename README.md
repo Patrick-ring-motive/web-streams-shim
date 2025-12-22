@@ -103,6 +103,7 @@ To satisfy modern `fetch` specifications when streaming request bodies, the libr
 
 ![Request.duplex](https://caniuse.smokestack.workers.dev/?feature=Request.duplex)
 
+
 ### ReadableStreamDefaultReader Constructor Support
 
 The library adds support for the `ReadableStreamDefaultReader` constructor.
@@ -113,8 +114,8 @@ The library adds support for the `ReadableStreamDefaultReader` constructor.
 | :--- | :--- | :--- |
 | [`ReadableStreamDefaultReader`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamDefaultReader) | [`constructor(stream)`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamDefaultReader/ReadableStreamDefaultReader) | **Polyfills the `ReadableStreamDefaultReader` constructor** to accept a stream directly. In environments where the native constructor doesn't support this (like Bun), it delegates to `stream.getReader()` and properly sets up the prototype chain. This allows `new ReadableStreamDefaultReader(stream)` to work consistently across all runtimes. |
 
-### Additional Shims
 
+### Additional Shims
 
 ![ReadableStreamBYOBReader](https://caniuse.smokestack.workers.dev/?feature=ReadableStreamBYOBReader)
 
