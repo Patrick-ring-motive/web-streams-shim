@@ -52,17 +52,36 @@ The library adds the static method for creating streams from existing data sourc
 
 These shims ensure `Request` and `Response` objects (Records) consistently expose their body as a stream and provide the `bytes()` utility.
 
-| Target | Method/Property | Description |
+![Request.body](https://caniuse.smokestack.workers.dev/?feature=api.Request.body)
+
+| | | |
 | :--- | :--- | :--- |
 | [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request/body) | [`body`](https://developer.mozilla.org/en-US/docs/Web/API/Request/body) | Polyfills the `body` property to return a **`ReadableStream` representation of the body content**. This is crucial for environments where `fetch` exists but streaming is absent. |
-| [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response/body)  | [`body`](https://developer.mozilla.org/en-US/docs/Web/API/Response/body) | Provides the body content as a `ReadableStream`. |
-| [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request/bytes), [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response/bytes), [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob/bytes) | [`bytes()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | Adds the `bytes()` method, which **asynchronously returns the object's body/content as a `Uint8Array`**. |
 
-![Request.body](https://caniuse.smokestack.workers.dev/?feature=api.Request.body)
 ![Response.body](https://caniuse.smokestack.workers.dev/?feature=api.Response.body)
+
+| | | |
+| :--- | :--- | :--- |
+| [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response/body)  | [`body`](https://developer.mozilla.org/en-US/docs/Web/API/Response/body) | Provides the body content as a `ReadableStream`. |
+
 ![Request.bytes](https://caniuse.smokestack.workers.dev/?feature=api.Request.bytes)
+
+| | | |
+| :--- | :--- | :--- |
+| [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request/bytes) | [`bytes()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | Adds the `bytes()` method, which **asynchronously returns the object's body/content as a `Uint8Array`**. |
+
 ![Response.bytes](https://caniuse.smokestack.workers.dev/?feature=api.Response.bytes)
+
+| | | |
+| :--- | :--- | :--- |
+| [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response/bytes) | [`bytes()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | Adds the `bytes()` method, which **asynchronously returns the object's body/content as a `Uint8Array`**. |
+
 ![Blob.bytes](https://caniuse.smokestack.workers.dev/?feature=api.Blob.bytes)
+
+| | | |
+| :--- | :--- | :--- |
+| [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob/bytes) | [`bytes()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | Adds the `bytes()` method, which **asynchronously returns the object's body/content as a `Uint8Array`**. |
+
 
 ### Duplex Compliance Shim
 
@@ -78,10 +97,12 @@ To satisfy modern `fetch` specifications when streaming request bodies, the libr
 
 The library adds support for the `ReadableStreamDefaultReader` constructor.
 
+![ReadableStreamDefaultReader.constructor](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStreamDefaultReader.constructor)
+
 | | | |
 | :--- | :--- | :--- |
 | [`ReadableStreamDefaultReader`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamDefaultReader) | [`constructor(stream)`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamDefaultReader/ReadableStreamDefaultReader) | **Polyfills the `ReadableStreamDefaultReader` constructor** to accept a stream directly. In environments where the native constructor doesn't support this (like Bun), it delegates to `stream.getReader()` and properly sets up the prototype chain. This allows `new ReadableStreamDefaultReader(stream)` to work consistently across all runtimes. |
 
-![ReadableStreamDefaultReader.constructor](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStreamDefaultReader.constructor)
 
-![🛶](https://cdn.jsdelivr.net/npm/web-streams-shim/web-streams-core.js "🛶")
+
+![🛶](https://cdn.jsdelivr.net/npm/web-streams-shim/web-streams-core.js)
