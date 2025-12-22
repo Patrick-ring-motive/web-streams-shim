@@ -36,6 +36,7 @@ The library adds **comprehensive support for modern JavaScript iteration pattern
 | [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) | [`[Symbol.asyncIterator]`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncIterator) | Allows the stream to be directly iterable in `for-await-of` loops. |
 
 ⠀
+
 ![ReadableStream.values](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStream.values)
 | | | |
 | :--- | :--- | :--- |
@@ -63,6 +64,7 @@ This shim ensures `Request` and `Response` objects consistently expose their bod
 | [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request/body) | [`body`](https://developer.mozilla.org/en-US/docs/Web/API/Request/body) | Polyfills the `body` property to return a **`ReadableStream` representation of the body content**. This is crucial for environments where `fetch` exists but streaming is absent. |
 
 ⠀
+
 ![Response.body](https://caniuse.smokestack.workers.dev/?feature=api.Response.body)
 | | | |
 | :--- | :--- | :--- |
@@ -79,12 +81,14 @@ This shim ensures `Request` and `Response`, and `Blob` objects consistently prov
 | [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request/bytes) | [`bytes()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | Adds the `bytes()` method, which **asynchronously returns the object's body/content as a `Uint8Array`**. |
 
 ⠀
+
 ![Response.bytes](https://caniuse.smokestack.workers.dev/?feature=Response.bytes)
 | | | |
 | :--- | :--- | :--- |
 | [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response/bytes) | [`bytes()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | Adds the `bytes()` method, which **asynchronously returns the object's body/content as a `Uint8Array`**. |
 
 ⠀
+
 ![Blob.bytes](https://caniuse.smokestack.workers.dev/?feature=Blob.bytes)
 | | | |
 | :--- | :--- | :--- |
