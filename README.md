@@ -124,7 +124,7 @@ The library adds support for the `ReadableStreamDefaultReader` constructor.
 
 ![ReadableStreamBYOBRequest](https://caniuse.smokestack.workers.dev/?feature=ReadableStreamBYOBRequest)
 
-![ReadableByteStreamContoller](https://caniuse.smokestack.workers.dev/?feature=ReadableByteStreamContoller)
+![ReadableByteStreamContoller](https://caniuse.smokestack.workers.dev/?feature=ReadableByteStreamController)
 
 ![ReadableByteStreamContoller.byobRequest](https://caniuse.smokestack.workers.dev/?feature=ReadableByteStreamContoller.byobRequest)
 
