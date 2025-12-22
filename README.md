@@ -126,5 +126,6 @@ The library adds support for the `ReadableStreamDefaultReader` constructor.
 
 ![ReadableByteStreamContoller](https://caniuse.smokestack.workers.dev/?feature=ReadableByteStreamContoller)
 
+![ReadableByteStreamContoller.byobRequest](https://caniuse.smokestack.workers.dev/?feature=ReadableByteStreamContoller.byobRequest)
 
 ![](https://cdn.jsdelivr.net/npm/web-streams-shim/web-streams-core.js)
