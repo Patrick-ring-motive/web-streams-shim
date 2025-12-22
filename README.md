@@ -31,13 +31,12 @@ Each polyfill performs feature detection before initializing. If a feature is de
 The library adds **comprehensive support for modern JavaScript iteration patterns** to `ReadableStream` and its readers.
 
 ![ReadableStream.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=ReadableStream.@@asyncIterator)
-
 | | | |
 | :--- | :--- | :--- |
 | [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) | [`[Symbol.asyncIterator]`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncIterator) | Allows the stream to be directly iterable in `for-await-of` loops. |
 
-![ReadableStream.values](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStream.values)
 
+![ReadableStream.values](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStream.values)
 | | | |
 | :--- | :--- | :--- |
 | [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) | `values()` | An alias for `[Symbol.asyncIterator]` for explicit iteration. |
@@ -47,24 +46,24 @@ The library adds **comprehensive support for modern JavaScript iteration pattern
 
 The library adds the static method for creating streams from existing data sources.
 
+![ReadableStream.from](https://caniuse.smokestack.workers.dev/?feature=ReadableStream.from)
 | | |  |
 | :--- | :--- | :--- |
 | [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) | [`from(obj)`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream/from_static) | **Creates a new `ReadableStream` from any iterable or async iterable object**. It handles both synchronous and asynchronous iterators, including objects that yield `Promise`-like values. |
 
-![ReadableStream.from](https://caniuse.smokestack.workers.dev/?feature=ReadableStream.from)
+
 
 ### Body Shim
 
 This shim ensures `Request` and `Response` objects consistently expose their body as a stream.
 
 ![Request.body](https://caniuse.smokestack.workers.dev/?feature=Request.body)
-
 | | | |
 | :--- | :--- | :--- |
 | [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request/body) | [`body`](https://developer.mozilla.org/en-US/docs/Web/API/Request/body) | Polyfills the `body` property to return a **`ReadableStream` representation of the body content**. This is crucial for environments where `fetch` exists but streaming is absent. |
 
-![Response.body](https://caniuse.smokestack.workers.dev/?feature=api.Response.body)
 
+![Response.body](https://caniuse.smokestack.workers.dev/?feature=api.Response.body)
 | | | |
 | :--- | :--- | :--- |
 | [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response/body)  | [`body`](https://developer.mozilla.org/en-US/docs/Web/API/Response/body) | Provides the body content as a `ReadableStream`. |
@@ -75,19 +74,18 @@ This shim ensures `Request` and `Response` objects consistently expose their bod
 This shim ensures `Request` and `Response`, and `Blob` objects consistently provide the `bytes()` utility.
 
 ![Request.bytes](https://caniuse.smokestack.workers.dev/?feature=Request.bytes)
-
 | | | |
 | :--- | :--- | :--- |
 | [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request/bytes) | [`bytes()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | Adds the `bytes()` method, which **asynchronously returns the object's body/content as a `Uint8Array`**. |
 
-![Response.bytes](https://caniuse.smokestack.workers.dev/?feature=Response.bytes)
 
+![Response.bytes](https://caniuse.smokestack.workers.dev/?feature=Response.bytes)
 | | | |
 | :--- | :--- | :--- |
 | [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response/bytes) | [`bytes()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | Adds the `bytes()` method, which **asynchronously returns the object's body/content as a `Uint8Array`**. |
 
-![Blob.bytes](https://caniuse.smokestack.workers.dev/?feature=Blob.bytes)
 
+![Blob.bytes](https://caniuse.smokestack.workers.dev/?feature=Blob.bytes)
 | | | |
 | :--- | :--- | :--- |
 | [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob/bytes) | [`bytes()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | Adds the `bytes()` method, which **asynchronously returns the object's body/content as a `Uint8Array`**. |
@@ -109,7 +107,6 @@ To satisfy modern `fetch` specifications when streaming request bodies, the libr
 The library adds support for the `ReadableStreamDefaultReader` constructor.
 
 ![ReadableStreamDefaultReader.constructor](https://caniuse.smokestack.workers.dev/?feature=ReadableStreamDefaultReader.constructor)
-
 | | | |
 | :--- | :--- | :--- |
 | [`ReadableStreamDefaultReader`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamDefaultReader) | [`constructor(stream)`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamDefaultReader/ReadableStreamDefaultReader) | **Polyfills the `ReadableStreamDefaultReader` constructor** to accept a stream directly. In environments where the native constructor doesn't support this (like Bun), it delegates to `stream.getReader()` and properly sets up the prototype chain. This allows `new ReadableStreamDefaultReader(stream)` to work consistently across all runtimes. |
