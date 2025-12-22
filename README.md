@@ -30,13 +30,18 @@ Each polyfill performs feature detection before initializing. If a feature is de
 
 The library adds **comprehensive support for modern JavaScript iteration patterns** to `ReadableStream` and its readers.
 
-| Target | Method/Property | Description |
+![ReadableStream.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStream.@@asyncIterator)
+
+| | | |
 | :--- | :--- | :--- |
 | [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) | [`[Symbol.asyncIterator]`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncIterator) | Allows the stream to be directly iterable in `for-await-of` loops. |
+
+![ReadableStream.values](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStream.values)
+
+| | | |
+| :--- | :--- | :--- |
 | [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) | `values()` | An alias for `[Symbol.asyncIterator]` for explicit iteration. |
 
-![ReadableStream.asyncIterator](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStream.@@asyncIterator)
-![ReadableStream.values](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStream.values)
 
 ### Stream Construction Utility
 
@@ -48,9 +53,9 @@ The library adds the static method for creating streams from existing data sourc
 
 ![ReadableStream.from](https://caniuse.smokestack.workers.dev/?feature=api.ReadableStream.from)
 
-### Body and Bytes Shims
+### Body Shim
 
-These shims ensure `Request` and `Response` objects (Records) consistently expose their body as a stream and provide the `bytes()` utility.
+This shim ensures `Request` and `Response` objects consistently expose their body as a stream.
 
 ![Request.body](https://caniuse.smokestack.workers.dev/?feature=api.Request.body)
 
@@ -63,6 +68,11 @@ These shims ensure `Request` and `Response` objects (Records) consistently expos
 | | | |
 | :--- | :--- | :--- |
 | [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response/body)  | [`body`](https://developer.mozilla.org/en-US/docs/Web/API/Response/body) | Provides the body content as a `ReadableStream`. |
+
+
+### Bytes Shim
+
+This shim ensures `Request` and `Response`, and `Blob` objects consistently provide the `bytes()` utility.
 
 ![Request.bytes](https://caniuse.smokestack.workers.dev/?feature=api.Request.bytes)
 
