@@ -721,7 +721,7 @@
                 return reader;
             }), _getReader);
             if(FORCE_POLYFILLS || typeof ReadableByteStreamController === 'undefined'){
-                $global.ReadableByteStreamContoller = setStrings(class ReadableByteStreamContoller extends ReadableStreamDefaultController{});
+                $global.ReadableByteStreamController = setStrings(class ReadableByteStreamController extends ReadableStreamDefaultController{});
             }
         }
     }

@@ -3,8 +3,25 @@
   "version": "1.0.7",
   "description": "",
   "main": "web-streams-core.js",
+  "browser": "web-streams-core.js",
+  "types": "web-streams-core.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./web-streams-core.d.ts",
+      "default": "./web-streams-core.js"
+    },
+    "./extensions": "./extensions/web-streams-extensions.js",
+    "./async-iterator": "./ReadableStream-asyncIterator.js",
+    "./from": "./ReadableStream-from.js",
+    "./bytes": "./Record-bytes.js",
+    "./body": "./Record-body.js",
+    "./duplex": "./Record-duplex.js",
+    "./byob-reader": "./ReadableStreamBYOBReader.js",
+    "./default-reader": "./ReadableStreamDefaultReader-constructor.js"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\""
+    "test": "open test/test.html || xdg-open test/test.html || start test/test.html"
   },
   "keywords": [
     "streams",
@@ -44,6 +61,5 @@
     "type": "git",
     "url": "git+https://github.com/Patrick-ring-motive/web-streams-shim.git"
   },
-  "author": "patrick.ring.motive@gmail.com",
-  "type": "commonjs"
+  "author": "patrick.ring.motive@gmail.com"
 }

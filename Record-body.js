@@ -84,18 +84,6 @@
 
     /**
 
-    - Safely executes a function and catches any errors
-    - @param {Function} fn - Function to execute
-    - @returns {*} The result of fn() or undefined if an error occurred
-      */
-    const Q = fn => {
-        try {
-            return fn?.();
-        } catch {}
-    };
-
-    /**
-
     - Safely checks instanceof relationship to avoid errors with cross-realm objects
     - @param {*} x - The object to check
     - @param {Function} y - The constructor to check against
