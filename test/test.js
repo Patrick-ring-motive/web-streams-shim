@@ -1,4 +1,12 @@
 // Test framework
+const documentSelector = (selector) => {
+    try{
+        return document.querySelector(selector);
+    }catch(e){
+        console.warn(`Invalid selector: ${selector}`, e);
+    }
+};
+
 class TestRunner {
     constructor() {
         this.tests = [];
@@ -11,7 +19,7 @@ class TestRunner {
 
     async runAll() {
         this.results = [];
-        const resultsDiv = document.getElementById('results');
+        const resultsDiv = documentSelector('#results');
         resultsDiv.innerHTML = '';
 
         for (const test of this.tests) {
@@ -32,8 +40,10 @@ class TestRunner {
     }
 
     createTestElement(name, status) {
-        const section = document.querySelector(`#section-${name.split(':')[0].replace(/\s+/g, '-')}`) ||
-                       this.createSection(name.split(':')[0]);
+        const sectionName = name.split(':')[0];
+        const sectionId = this.sanitizeSelectorId(sectionName);
+        const section = documentSelector(`#section-${sectionId}`) ||
+                       this.createSection(sectionName, sectionId);
 
         const div = document.createElement('div');
         div.className = `test-case ${status}`;
@@ -45,12 +55,16 @@ class TestRunner {
         return div;
     }
 
-    createSection(title) {
+    sanitizeSelectorId(str) {
+        return str.replace(/[^a-zA-Z0-9-_]/g, '-').replace(/-+/g, '-');
+    }
+
+    createSection(title, sectionId) {
         const section = document.createElement('div');
         section.className = 'test-section';
-        section.id = `section-${title.replace(/\s+/g, '-')}`;
+        section.id = `section-${sectionId}`;
         section.innerHTML = `<h2>${title}</h2>`;
-        document.getElementById('results').appendChild(section);
+        documentSelector('#results').appendChild(section);
         return section;
     }
 
@@ -70,10 +84,10 @@ class TestRunner {
         const passed = this.results.filter(r => r.passed).length;
         const failed = total - passed;
 
-        document.getElementById('summary').style.display = 'flex';
-        document.getElementById('totalCount').textContent = total;
-        document.getElementById('passCount').textContent = passed;
-        document.getElementById('failCount').textContent = failed;
+        documentSelector('#summary').style.display = 'flex';
+        documentSelector('#totalCount').textContent = total;
+        documentSelector('#passCount').textContent = passed;
+        documentSelector('#failCount').textContent = failed;
     }
 }
 
@@ -391,8 +405,8 @@ runner.test('Integration: Early termination with break', async () => {
 });
 
 // Event listeners
-document.getElementById('runTests').addEventListener('click', async () => {
-    const button = document.getElementById('runTests');
+documentSelector('#runTests').addEventListener('click', async () => {
+    const button = documentSelector('#runTests');
     button.disabled = true;
     button.textContent = 'Running...';
 
@@ -402,9 +416,9 @@ document.getElementById('runTests').addEventListener('click', async () => {
     button.textContent = 'Run All Tests';
 });
 
-document.getElementById('clearResults').addEventListener('click', () => {
-    document.getElementById('results').innerHTML = '';
-    document.getElementById('summary').style.display = 'none';
+documentSelector('#clearResults').addEventListener('click', () => {
+    documentSelector('#results').innerHTML = '';
+    documentSelector('#summary').style.display = 'none';
 });
 
 // Symbol.asyncDispose Tests
