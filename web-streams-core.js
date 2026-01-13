@@ -1,5 +1,5 @@
 (() => {
-    // **TESTING FLAG**: Set to true to force enable all polyfills regardless of feature detection 
+    // **TESTING FLAG**: Set to true to force enable all polyfills regardless of feature detection
     let FORCE_POLYFILLS = false;
     try{
         if(location.href.includes('test.html')){
@@ -519,6 +519,7 @@
     }
 
     if (FORCE_POLYFILLS || !$global.ReadableStreamBYOBReader) {
+
         $global.ReadableStreamBYOBReader ??= cloneClass(ReadableStreamDefaultReader);
         Object.defineProperty(ReadableStreamBYOBReader, 'name', {
             value: 'ReadableStreamBYOBReader',
@@ -529,7 +530,11 @@
         setStrings(ReadableStreamBYOBReader);
         const _getReader = ReadableStream.prototype.getReader;
         ReadableStream.prototype.getReader = Object.setPrototypeOf(function getReader(options) {
-            const reader = _getReader.call(this, options);
+            try{
+                const reader = _getReader.call(this, options);
+            }catch(e){
+                console.warn(e,this,options);
+            }
             if (options?.mode == 'byob') {
                 Object.setPrototypeOf(reader, ReadableStreamBYOBReader.prototype);
             }
