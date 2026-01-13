@@ -529,9 +529,9 @@
         setStrings(ReadableStreamBYOBReader);
         const _getReader = ReadableStream.prototype.getReader;
         ReadableStream.prototype.getReader = Object.setPrototypeOf(function getReader(options) {
-            const reader = _getReader.call(this,options);
+            const reader = _getReader.call(this, options);
             if (options?.mode == 'byob') {
-                Object.setPrototypeOf(reader, ReadableStreamBYOBReader);
+                Object.setPrototypeOf(reader, ReadableStreamBYOBReader.prototype);
             }
             return reader;
         }, _getReader);
@@ -586,7 +586,7 @@
     if (FORCE_POLYFILLS || !supportsReadableStreamBYOBReaderConstructor()) {
         const _ReadableStreamBYOBReader = $global.ReadableStreamBYOBReader;
         const $ReadableStreamBYOBReader = function ReadableStreamBYOBReader(stream) {
-            return Object.setPrototypeOf(stream.getReader(), $global.ReadableStreamBYOBReader.prototype);
+            return Object.setPrototypeOf(stream.getReader({ mode: 'byob' }), $global.ReadableStreamBYOBReader.prototype);
         };
         setStrings($ReadableStreamBYOBReader);
         extend($ReadableStreamBYOBReader, _ReadableStreamBYOBReader);
