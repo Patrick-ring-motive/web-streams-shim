@@ -530,8 +530,9 @@
         setStrings(ReadableStreamBYOBReader);
         const _getReader = ReadableStream.prototype.getReader;
         ReadableStream.prototype.getReader = Object.setPrototypeOf(function getReader(options) {
+            let reader;
             try{
-                const reader = _getReader.call(this, options);
+                reader = _getReader.call(this, options);
             }catch(e){
                 console.warn(e,this,options);
             }
