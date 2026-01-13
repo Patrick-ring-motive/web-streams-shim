@@ -398,12 +398,12 @@
 
         const $global = Q(() => globalThis) ?? Q(() => self) ?? Q(() => global) ?? Q(() => window) ?? this;
 
-        const duplexHalf = x => Q(() => Object.defineProperty(x, 'duplex', {
+        const duplexHalf = x => Q(() => x != undefined ? Object.defineProperty(Object(x), 'duplex', {
             value: 'half',
             configurable: true,
             writable: true,
             enumerable: false,
-        })) ?? x;
+        }) : x);
 
         for (const record of [Request, Response, ReadableStream, Blob]) {
             duplexHalf(record.prototype);
