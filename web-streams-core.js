@@ -354,7 +354,7 @@
                                 }), ReadableStreamDefaultController),
                             });
 
-                            return $streamParts.body;
+                            return Object.setPrototypeOf($streamParts.body, ReadableStream.prototype);
                         }), ReadableStream);
                     })(),
                     configurable: true,
