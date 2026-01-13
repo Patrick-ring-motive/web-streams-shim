@@ -8,8 +8,12 @@
     }catch{}
     const Q = fn => {
         try {
-            return fn?.()
-        } catch {}
+            const result = fn?.();
+            result?.catch?.((e)=>FORCE_POLYFILLS&&console.warn(e));
+            return result; 
+        } catch(e){
+            if(FORCE_POLYFILLS)console.warn(e);
+        }
     };
     const $global = Q(() => globalThis) ?? Q(() => global) ?? Q(() => self) ?? Q(() => window) ?? this;
     const constructPrototype = newClass => {
