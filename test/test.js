@@ -94,15 +94,17 @@ class TestRunner {
 const runner = new TestRunner();
 
 // Helper functions
-function assert(condition, message) {
+function assert(condition, message, actualValue) {
     if (!condition) {
-        throw new Error(message || 'Assertion failed');
+        const valueInfo = actualValue !== undefined ? `\nActual value: ${JSON.stringify(actualValue, null, 2)}` : '';
+        throw new Error((message || 'Assertion failed') + valueInfo);
     }
 }
 
 function assertEqual(actual, expected, message) {
     if (actual !== expected) {
-        throw new Error(message || `Expected ${expected}, got ${actual}`);
+        const baseMessage = message || 'Values do not match';
+        throw new Error(`${baseMessage}\nExpected: ${JSON.stringify(expected, null, 2)}\nActual: ${JSON.stringify(actual, null, 2)}`);
     }
 }
 
@@ -290,25 +292,25 @@ runner.test('Request/Response: Request has body property', async () => {
         method: 'POST',
         body: 'test data'
     });
-    assert(req.body !== undefined, 'Request should have body property');
+    assert(req.body !== undefined, 'Request should have body property', req.body);
 });
 
 runner.test('Request/Response: Response has body property', async () => {
     const res = new Response('test data');
-    assert(res.body !== undefined, 'Response should have body property');
+    assert(res.body !== undefined, 'Response should have body property', res.body);
 });
 
 runner.test('Request/Response: body is ReadableStream', async () => {
     const res = new Response('test data');
-    assert(res.body instanceof ReadableStream, 'body should be a ReadableStream');
+    assert(res.body instanceof ReadableStream, 'body should be a ReadableStream', res.body);
 });
 
 runner.test('Request/Response: can read body chunks', async () => {
     const res = new Response('hello world');
     const reader = res.body.getReader();
     const { value, done } = await reader.read();
-    assert(value instanceof Uint8Array, 'Chunk should be Uint8Array');
-    assert(!done, 'Should not be done after first read');
+    assert(value instanceof Uint8Array, 'Chunk should be Uint8Array', value);
+    assert(!done, 'Should not be done after first read', done);
 });
 
 runner.test('Request/Response: bodyUsed property', async () => {
@@ -325,7 +327,7 @@ runner.test('bytes(): Response.bytes() exists', async () => {
 runner.test('bytes(): returns Uint8Array', async () => {
     const res = new Response('hello');
     const bytes = await res.bytes();
-    assert(bytes instanceof Uint8Array, 'bytes() should return Uint8Array');
+    assert(bytes instanceof Uint8Array, 'bytes() should return Uint8Array', bytes);
 });
 
 runner.test('bytes(): correct data', async () => {
@@ -344,8 +346,8 @@ runner.test('bytes(): Blob.bytes() exists', async () => {
 runner.test('bytes(): Blob.bytes() returns data', async () => {
     const blob = new Blob(['hello']);
     const bytes = await blob.bytes();
-    assert(bytes instanceof Uint8Array, 'Blob bytes() should return Uint8Array');
-    assert(bytes.length > 0, 'Should have bytes');
+    assert(bytes instanceof Uint8Array, 'Blob bytes() should return Uint8Array', bytes);
+    assert(bytes.length > 0, 'Should have bytes', bytes);
 });
 
 // ReadableStreamDefaultReader Constructor Tests
@@ -357,7 +359,7 @@ runner.test('ReadableStreamDefaultReader: constructor works', async () => {
         }
     });
     const reader = new ReadableStreamDefaultReader(stream);
-    assert(reader instanceof ReadableStreamDefaultReader, 'Should be instance of ReadableStreamDefaultReader');
+    assert(reader instanceof ReadableStreamDefaultReader, 'Should be instance of ReadableStreamDefaultReader', reader);
 });
 
 runner.test('ReadableStreamDefaultReader: can read after construction', async () => {
@@ -462,7 +464,7 @@ runner.test('ReadableStreamBYOBReader: can create reader with mode byob', async 
         type: 'bytes'
     });
     const reader = stream.getReader({ mode: 'byob' });
-    assert(reader !== null, 'Should create BYOB reader');
+    assert(reader !== null, 'Should create BYOB reader', reader);
 });
 
 runner.test('ReadableStreamBYOBReader: constructor works', async () => {
@@ -474,7 +476,7 @@ runner.test('ReadableStreamBYOBReader: constructor works', async () => {
         type: 'bytes'
     });
     const reader = new ReadableStreamBYOBReader(stream);
-    assert(reader instanceof ReadableStreamBYOBReader, 'Should be instance of ReadableStreamBYOBReader');
+    assert(reader instanceof ReadableStreamBYOBReader, 'Should be instance of ReadableStreamBYOBReader', reader);
 });
 
 runner.test('ReadableStreamBYOBReader: read with view', async () => {
@@ -488,8 +490,8 @@ runner.test('ReadableStreamBYOBReader: read with view', async () => {
     const reader = stream.getReader({ mode: 'byob' });
     const buffer = new Uint8Array(10);
     const result = await reader.read(buffer);
-    assert(result.value instanceof Uint8Array, 'Should return Uint8Array');
-    assert(!result.done || result.done === false || result.value.length > 0, 'Should have data or be done');
+    assert(result.value instanceof Uint8Array, 'Should return Uint8Array', result.value);
+    assert(!result.done || result.done === false || result.value.length > 0, 'Should have data or be done', result);
 });
 
 runner.test('ReadableStreamBYOBReader: extends ReadableStreamDefaultReader', async () => {
@@ -528,7 +530,7 @@ runner.test('ReadableStreamBYOBRequest: byobRequest on controller', async () => 
     } catch (e) {
         // May error, but we just want to trigger pull
     }
-    assert(hasRequest, 'Controller should have byobRequest property');
+    assert(hasRequest, 'Controller should have byobRequest property', hasRequest);
 });
 
 runner.test('ReadableStreamBYOBRequest: respond method', async () => {
@@ -688,7 +690,7 @@ runner.test('Reader Iteration: next() on closed stream', async () => {
     });
     const reader = stream.getReader();
     const result = await reader.next();
-    assert(result.done === true, 'Should be done on closed stream');
+    assert(result.done === true, 'Should be done on closed stream', result);
 });
 
 runner.test('Reader Iteration: multiple readers via asyncIterator', async () => {
@@ -723,10 +725,10 @@ runner.test('Request/Response: can iterate body directly', async () => {
     const res = new Response('hello');
     let chunkCount = 0;
     for await (const chunk of res.body) {
-        assert(chunk instanceof Uint8Array, 'Each chunk should be Uint8Array');
+        assert(chunk instanceof Uint8Array, 'Each chunk should be Uint8Array', chunk);
         chunkCount++;
     }
-    assert(chunkCount > 0, 'Should read at least one chunk');
+    assert(chunkCount > 0, 'Should read at least one chunk', chunkCount);
 });
 
 runner.test('Request/Response: clone() creates independent body', async () => {
@@ -739,7 +741,7 @@ runner.test('Request/Response: clone() creates independent body', async () => {
 runner.test('bytes(): works with empty Response', async () => {
     const res = new Response('');
     const bytes = await res.bytes();
-    assert(bytes instanceof Uint8Array, 'Should return Uint8Array');
+    assert(bytes instanceof Uint8Array, 'Should return Uint8Array', bytes);
     assertEqual(bytes.length, 0, 'Empty response should have 0 bytes');
 });
 
@@ -762,7 +764,7 @@ runner.test('Reader: closed property exists', async () => {
 runner.test('Reader: closed is a Promise', async () => {
     const stream = new ReadableStream();
     const reader = stream.getReader();
-    assert(reader.closed instanceof Promise || typeof reader.closed?.then === 'function', 'closed should be a Promise');
+    assert(reader.closed instanceof Promise || typeof reader.closed?.then === 'function', 'closed should be a Promise', reader.closed);
 });
 
 runner.test('Reader: closed resolves when stream closes', async () => {
@@ -810,7 +812,7 @@ runner.test('Error Handling: stream error propagates to reader', async () => {
     } catch (e) {
         errorCaught = true;
     }
-    assert(errorCaught, 'Should catch stream error');
+    assert(errorCaught, 'Should catch stream error', errorCaught);
 });
 
 runner.test('Error Handling: throw() logs error to console', async () => {
@@ -826,7 +828,7 @@ runner.test('Error Handling: throw() logs error to console', async () => {
     console.error = () => { errorLogged = true; };
     await reader.throw(new Error('test'));
     console.error = originalError;
-    assert(errorLogged, 'throw() should log to console.error');
+    assert(errorLogged, 'throw() should log to console.error', errorLogged);
 });
 
 runner.test('Error Handling: cancel propagates through terminate', async () => {
@@ -875,7 +877,7 @@ runner.test('Utilities: setStrings functionality', async () => {
     // Test that toString works correctly
     const stream = new ReadableStream();
     const str = String(stream.getReader);
-    assert(str.includes('function') || str.includes('getReader'), 'Should have proper string representation');
+    assert(str.includes('function') || str.includes('getReader'), 'Should have proper string representation', str);
 });
 
 runner.test('Utilities: extend functionality', async () => {
@@ -885,7 +887,7 @@ runner.test('Utilities: extend functionality', async () => {
             controller.close();
         }
     }));
-    assert(reader instanceof ReadableStreamDefaultReader, 'Should maintain prototype chain');
+    assert(reader instanceof ReadableStreamDefaultReader, 'Should maintain prototype chain', reader);
 });
 
 // Auto-run on load
