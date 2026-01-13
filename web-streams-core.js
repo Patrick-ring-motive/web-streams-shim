@@ -529,7 +529,7 @@
         setStrings(ReadableStreamBYOBReader);
         const _getReader = ReadableStream.prototype.getReader;
         ReadableStream.prototype.getReader = Object.setPrototypeOf(function getReader(options) {
-            const reader = _getReader.call(this);
+            const reader = _getReader.call(this,options);
             if (options?.mode == 'byob') {
                 Object.setPrototypeOf(reader, ReadableStreamBYOBReader);
             }
