@@ -570,9 +570,13 @@
             }catch(e){
                 console.warn(e,this,options,this?.locked,instanceOf(this, ReadableStream),attempts);
                 if(attempts<3){
-                    reader = new Response(this).body.getReader(options,attempts+1);
+                    const streamClone = new Response(this).body;
+                    setHidden(this,'&attempts',attempts + 1);
+                    reader = streamClone.getReader(options,attempts+1);
                 }else if(attempts === 3){
-                    reader = new Response(this).body.getReader(null,attempts+1);
+                    const streamClone = new Response(this).body;
+                    setHidden(this,'&attempts',attempts + 1);
+                    reader = streamClone.getReader(null,attempts+1);
                 }
             }
             if (options?.mode == 'byob') {
