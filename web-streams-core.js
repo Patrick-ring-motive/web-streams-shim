@@ -573,6 +573,9 @@
             };
         }), _read);
     }
+    if(FORCE_POLYFILLS || typeof ReadableByteStreamController === 'undefined'){
+      $global.ReadableByteStreamController = setStrings(class ReadableByteStreamController extends ReadableStreamDefaultController{});
+    }
     const supportsReadableStreamBYOBReaderConstructor = () => {
         try {
             const stream = new ReadableStream({
@@ -730,9 +733,6 @@
 
                 return reader;
             }), _getReader);
-            if(FORCE_POLYFILLS || typeof ReadableByteStreamController === 'undefined'){
-                $global.ReadableByteStreamController = setStrings(class ReadableByteStreamController extends ReadableStreamDefaultController{});
-            }
         }
     }
 })();
