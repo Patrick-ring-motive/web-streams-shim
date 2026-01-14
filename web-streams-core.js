@@ -6,10 +6,17 @@
             FORCE_POLYFILLS = true;
         }
     }catch{}
+    const errors = new Set();
+    const dedupeErrors = x => {
+        const key = `${x?.name}|${x?.message}|${x?.stack}`;
+        if(errors.has(key))return false;
+        errors.add(key);
+        return true;
+    }
     const Q = fn => {
         try {
             const result = fn?.();
-            result?.catch?.((e)=>FORCE_POLYFILLS&&console.warn(e));
+            result?.catch?.((e)=>FORCE_POLYFILLS&& dedupeErrors(e) && console.warn(e));
             return result; 
         } catch(e){
             if(FORCE_POLYFILLS)console.warn(e);
@@ -529,13 +536,18 @@
         });
         setStrings(ReadableStreamBYOBReader);
         const _getReader = ReadableStream.prototype.getReader;
-        ReadableStream.prototype.getReader = Object.setPrototypeOf(function getReader(options) {
+        ReadableStream.prototype.getReader = Object.setPrototypeOf(function getReader(options,attempts) {
+            attempts ||= 0;
             let reader;
             try{
                 reader = _getReader.call(this, options);
             }catch(e){
                 console.warn(e,this,options);
-                reader = ReadableStream.from(this).getReader(options);
+                if(attempts<3){
+                    reader = ReadableStream.from(this).getReader(options,attempts+1);
+                }else{
+                    reader = ReadableStream.from(this).getReader();
+                }
             }
             if (options?.mode == 'byob') {
                 Object.setPrototypeOf(reader, ReadableStreamBYOBReader.prototype);
