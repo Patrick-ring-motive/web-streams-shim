@@ -596,13 +596,14 @@
         }, _getReader);
         extend(ReadableStreamBYOBReader, ReadableStreamDefaultReader);
         const _read = ReadableStreamBYOBReader.prototype.read;
+        const defaultRead = ReadableStreamDefaultReader.prototype.read;
         const BYOBRead = BYOBReader?.prototype?.read;
         ReadableStreamBYOBReader.prototype.read = extend(setStrings(async function read(view) {
             // If no view is provided, fall back to default behavior
             view ??= this['&controller']?.['&view'];
             setHidden(this['&controller']??{},'&view', view);
             if (!view) {
-                return _read.call(this, view);
+                return defaultRead.call(this, view);
             }
             // Read from the underlying stream (default reader behavior)
             const result = await (BYOBRead || _read).call(this, view);
