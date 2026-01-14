@@ -600,36 +600,38 @@
         const BYOBRead = BYOBReader?.prototype?.read;
         ReadableStreamBYOBReader.prototype.read = extend(setStrings(async function read(view) {
             // If no view is provided, fall back to default behavior
-            view ??= this['&controller']?.['&view'];
+            view ??= this['&controller']?.['&view'] ?? this?.['&view'];
             setHidden(this['&controller']??{},'&view', view);
+            setHidden(this,'&view', view);
             if (!view) {
                 return defaultRead.call(this, view);
             }
 
             try{
-            // Read from the underlying stream (default reader behavior)
-            const result = await (BYOBRead || _read).call(this, view);
-            // If done, return with the view and done flag
-            if (result.done != false) {
+                // Read from the underlying stream (default reader behavior)
+                const result = await (BYOBRead || _read).call(this, view);
+                setHidden(result,'&view', view);
+                // If done, return with the view and done flag
+                if (result.done != false) {
+                    return {
+                        value: view,
+                        done: true
+                    };
+                }
+                // Convert the chunk to Uint8Array if needed
+                const chunk = result.value instanceof Uint8Array ? result.value : new Uint8Array(result.value);
+                // Determine how much data we can copy
+                const bytesToCopy = Math.min(chunk.byteLength, view.byteLength);
+                // Create a temporary view to copy into the provided view
+                const targetView = new Uint8Array(view.buffer, view.byteOffset, view.byteLength);
+                // Copy the data into the provided buffer
+                targetView.set(chunk.subarray(0, bytesToCopy), 0);
+                // Create a view of the filled portion
+                const filledView = new view.constructor(view.buffer, view.byteOffset, bytesToCopy);
                 return {
-                    value: view,
-                    done: true
+                    value: filledView,
+                    done: false
                 };
-            }
-            // Convert the chunk to Uint8Array if needed
-            const chunk = result.value instanceof Uint8Array ? result.value : new Uint8Array(result.value);
-            // Determine how much data we can copy
-            const bytesToCopy = Math.min(chunk.byteLength, view.byteLength);
-            // Create a temporary view to copy into the provided view
-            const targetView = new Uint8Array(view.buffer, view.byteOffset, view.byteLength);
-            // Copy the data into the provided buffer
-            targetView.set(chunk.subarray(0, bytesToCopy), 0);
-            // Create a view of the filled portion
-            const filledView = new view.constructor(view.buffer, view.byteOffset, bytesToCopy);
-            return {
-                value: filledView,
-                done: false
-            };
             }catch(e){
                 if(FORCE_POLYFILLS)console.warn(e,this,view);
                 return defaultRead.call(this);
