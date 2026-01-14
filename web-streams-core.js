@@ -547,7 +547,7 @@
             }catch(e){
                 console.warn(e,this,options);
                 if(attempts<3){
-                    reader = _getReader.call(ReadableStream.from(this), options,attempts+1);
+                    reader = ReadableStream.from(this).getReader(options,attempts+1);
                 }else if(attempts === 3){
                     reader = ReadableStream.from(this).getReader();
                 }
