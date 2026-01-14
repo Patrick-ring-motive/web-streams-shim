@@ -571,7 +571,7 @@
                 try{
                     reader = _getReader.call(this, options,attempts + 1);
                 }catch(e){
-                    console.warn(e,this,options,this?.locked,instanceOf(this, ReadableStream),attempts);
+                    if(FORCE_POLYFILLS)console.warn(e,this,options,this?.locked,instanceOf(this, ReadableStream),attempts);
                     if(attempts<3){
                         const streamClone = new Response(this).body;
                         setHidden(streamClone,'&attempts',attempts + 1);
@@ -619,6 +619,7 @@
                 done: false
             };
         }), _read);
+        ReadableStreamDefaultReader.prototype.read = ReadableStreamBYOBReader.prototype.read;
     }
     const supportsReadableStreamBYOBReaderConstructor = () => {
         try {
