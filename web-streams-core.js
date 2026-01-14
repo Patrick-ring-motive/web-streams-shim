@@ -571,6 +571,7 @@
             }else{
                 if (options?.mode == 'byob') {
                     setHidden(this,'&mode','byob');
+                    setHidden(this,'&type','bytes');
                 }
                 try{
                     reader = _getReader.call(this, options,attempts + 1);
@@ -579,12 +580,14 @@
                     if(attempts<3){
                         const streamClone = new Response(this).body;
                         setHidden(streamClone,'&attempts',attempts + 1);
-                        setHidden(streamClone,'&mode',options?.mode);
+                        setHidden(streamClone,'&mode',options?.mode ?? this['&mode']);
+                        setHidden(streamClone,'&type','bytes');
                         reader = streamClone.getReader(options,attempts+1);
                     }else if(attempts === 3){
                         const streamClone = new Response(this).body;
                         setHidden(streamClone,'&attempts',attempts + 1);
                         setHidden(streamClone,'&mode','byob');
+                        setHidden(streamClone,'&type','bytes');
                         reader = streamClone.getReader(null,attempts+1);
                     }
                 }
@@ -732,9 +735,11 @@
             const _ReadableStream = ReadableStream;
 
             $global.ReadableStream = extend(setStrings(function ReadableStream(underlyingSource = {}, strategy) {
-                const $this = this;
+                const $this = this ?? new.target?.prototype;
 
-                if (underlyingSource?.type === 'bytes') {
+                if (underlyingSource?.type == 'bytes') {
+                    setHidden($this, '&mode', 'byob');
+                    setHidden($this, '&type', 'bytes');
                     const wrappedSource = Object.assign({}, underlyingSource);
                     const originalStart = underlyingSource.start;
                     const originalPull = underlyingSource.pull;
