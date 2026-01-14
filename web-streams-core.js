@@ -605,6 +605,8 @@
             if (!view) {
                 return defaultRead.call(this, view);
             }
+
+            try{
             // Read from the underlying stream (default reader behavior)
             const result = await (BYOBRead || _read).call(this, view);
             // If done, return with the view and done flag
@@ -628,6 +630,10 @@
                 value: filledView,
                 done: false
             };
+            }catch(e){
+                if(FORCE_POLYFILLS)console.warn(e,this,view);
+                return defaultRead.call(this);
+            }
         }), _read);
         ReadableStreamDefaultReader.prototype.read = ReadableStreamBYOBReader.prototype.read;
     }
