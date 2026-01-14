@@ -86,7 +86,15 @@
 
 
     const instanceOf = (x, y) => Q(() => x instanceof y);
-
+    const setHidden = (obj, prop, value) => {
+        Object.defineProperty(obj, prop, {
+            value,
+            writeable: true,
+            writable: true,
+            enumerable: false,
+            configurable: true
+        });
+    };
 
     (() => {
         if (typeof ReadableStream === 'undefined') return;
@@ -554,7 +562,8 @@
             if(this.locked === true){
                 throw new TypeError('This stream is already locked for reading by another reader');
             }
-            attempts ||= 0;
+            attempts ||= Math.max(attempts,this['&attempts']||0);
+            setHidden(this,'&attempts',attempts + 1);
             let reader;
             try{
                 reader = _getReader.call(this, options,attempts + 1);
@@ -635,21 +644,13 @@
     }
     if (FORCE_POLYFILLS || !$global.ReadableStreamBYOBRequest) {
 
-        const protectedProp = (obj, key, value) =>
-            Object.defineProperty(obj, `&${key}`, {
-                value,
-                writable: true,
-                enumerable: false,
-                configurable: true,
-            });
-
         if (FORCE_POLYFILLS || !$global.ReadableStreamBYOBRequest) {
 
             class ReadableStreamBYOBRequest {
                 constructor(controller, view) {
-                    protectedProp(this, 'controller', controller);
-                    protectedProp(this, 'view', view);
-                    protectedProp(this, 'responded', false);
+                    setHidden(this, 'controller', controller);
+                    setHidden(this, 'view', view);
+                    setHidden(this, 'responded', false);
                 }
 
                 get view() {
@@ -660,7 +661,7 @@
                     if (this['&responded']) {
                         throw new TypeError('This BYOB request has already been responded to');
                     }
-                    this['&responded'] = true;
+                    setHidden(this, '&responded', true);
 
                     const filledView = new this['&view'].constructor(
                         this['&view'].buffer,
@@ -675,7 +676,7 @@
                     if (this['&responded']) {
                         throw new TypeError('This BYOB request has already been responded to');
                     }
-                    this['&responded'] = true;
+                    setHidden(this, '&responded', true);
                     this['&controller'].enqueue(view);
                 }
             }
