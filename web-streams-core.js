@@ -548,8 +548,8 @@
                 console.warn(e,this,options);
                 if(attempts<3){
                     reader = _getReader.call(ReadableStream.from(this), options,attempts+1);
-                }else{
-                    reader = _getReader.call(ReadableStream.from(this));
+                }else if(attempts === 3){
+                    reader = ReadableStream.from(this).getReader();
                 }
             }
             if (options?.mode == 'byob') {
