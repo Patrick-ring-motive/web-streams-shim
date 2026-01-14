@@ -537,6 +537,9 @@
         setStrings(ReadableStreamBYOBReader);
         const _getReader = ReadableStream.prototype.getReader;
         ReadableStream.prototype.getReader = Object.setPrototypeOf(function getReader(options,attempts) {
+            if(this.locked === true){
+                throw new TypeError('This stream is already locked for reading by another reader');
+            }
             attempts ||= 0;
             let reader;
             try{
@@ -544,9 +547,9 @@
             }catch(e){
                 console.warn(e,this,options);
                 if(attempts<3){
-                    reader = ReadableStream.from(this).getReader(options,attempts+1);
+                    reader = _getReader.call(ReadableStream.from(this), options,attempts+1);
                 }else{
-                    reader = ReadableStream.from(this).getReader();
+                    reader = _getReader.call(ReadableStream.from(this));
                 }
             }
             if (options?.mode == 'byob') {
