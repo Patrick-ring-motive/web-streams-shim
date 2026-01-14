@@ -565,18 +565,22 @@
             attempts ||= Math.max(attempts||0,this['&attempts']||0);
             setHidden(this,'&attempts',attempts + 1);
             let reader;
-            try{
-                reader = _getReader.call(this, options,attempts + 1);
-            }catch(e){
-                console.warn(e,this,options,this?.locked,instanceOf(this, ReadableStream),attempts);
-                if(attempts<3){
-                    const streamClone = new Response(this).body;
-                    setHidden(streamClone,'&attempts',attempts + 1);
-                    reader = streamClone.getReader(options,attempts+1);
-                }else if(attempts === 3){
-                    const streamClone = new Response(this).body;
-                    setHidden(streamClone,'&attempts',attempts + 1);
-                    reader = streamClone.getReader(null,attempts+1);
+            if (!options) {
+                reader = _getReader.call(this);
+            }else{
+                try{
+                    reader = _getReader.call(this, options,attempts + 1);
+                }catch(e){
+                    console.warn(e,this,options,this?.locked,instanceOf(this, ReadableStream),attempts);
+                    if(attempts<3){
+                        const streamClone = new Response(this).body;
+                        setHidden(streamClone,'&attempts',attempts + 1);
+                        reader = streamClone.getReader(options,attempts+1);
+                    }else if(attempts === 3){
+                        const streamClone = new Response(this).body;
+                        setHidden(streamClone,'&attempts',attempts + 1);
+                        reader = streamClone.getReader(null,attempts+1);
+                    }
                 }
             }
             if (options?.mode == 'byob') {
