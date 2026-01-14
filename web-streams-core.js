@@ -96,6 +96,8 @@
         });
     };
 
+    const BYOBReader = $global.ReadableStreamBYOBReader;
+
     (() => {
         if (typeof ReadableStream === 'undefined') return;
         const _locked = Object.getOwnPropertyDescriptor(ReadableStream.prototype, 'locked')?.get;
@@ -548,7 +550,6 @@
     }
 
     if (FORCE_POLYFILLS || !$global.ReadableStreamBYOBReader) {
-
         $global.ReadableStreamBYOBReader ??= cloneClass(ReadableStreamDefaultReader);
         Object.defineProperty(ReadableStreamBYOBReader, 'name', {
             value: 'ReadableStreamBYOBReader',
@@ -595,13 +596,16 @@
         }, _getReader);
         extend(ReadableStreamBYOBReader, ReadableStreamDefaultReader);
         const _read = ReadableStreamBYOBReader.prototype.read;
+        const BYOBRead = BYOBReader?.prototype?.read;
         ReadableStreamBYOBReader.prototype.read = extend(setStrings(async function read(view) {
             // If no view is provided, fall back to default behavior
+            view ??= this['&controller']?.['&view'];
+            setHidden(this['&controller']??{},'&view', view);
             if (!view) {
                 return _read.call(this, view);
             }
             // Read from the underlying stream (default reader behavior)
-            const result = await _read.call(this, view);
+            const result = await (BYOBRead || _read).call(this, view);
             // If done, return with the view and done flag
             if (result.done != false) {
                 return {
@@ -662,9 +666,9 @@
 
             class ReadableStreamBYOBRequest {
                 constructor(controller, view) {
-                    setHidden(this, 'controller', controller);
-                    setHidden(this, 'view', view);
-                    setHidden(this, 'responded', false);
+                    setHidden(this, '&controller', controller);
+                    setHidden(this, '&view', view);
+                    setHidden(this, '&responded', false);
                 }
 
                 get view() {
