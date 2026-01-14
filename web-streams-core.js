@@ -568,6 +568,9 @@
             if (!options) {
                 reader = _getReader.call(this);
             }else{
+                if (options?.mode == 'byob') {
+                    setHidden(this,'&mode','byob');
+                }
                 try{
                     reader = _getReader.call(this, options,attempts + 1);
                 }catch(e){
@@ -575,10 +578,12 @@
                     if(attempts<3){
                         const streamClone = new Response(this).body;
                         setHidden(streamClone,'&attempts',attempts + 1);
+                        setHidden(streamClone,'&mode',options?.mode);
                         reader = streamClone.getReader(options,attempts+1);
                     }else if(attempts === 3){
                         const streamClone = new Response(this).body;
                         setHidden(streamClone,'&attempts',attempts + 1);
+                        setHidden(streamClone,'&mode','byob');
                         reader = streamClone.getReader(null,attempts+1);
                     }
                 }
