@@ -745,13 +745,17 @@
                         return originalStart?.call($this, controller);
                     }), originalStart ?? ReadableStreamDefaultController);
 
-                    wrappedSource.pull = extend(setStrings(function pull(controller) {
+                    wrappedSource.pull = extend(setStrings(async function pull(controller) {
                         setHidden(controller,'&stream',$this);
                         setHidden($this,'&controller',controller);
                         if(underlyingSource.type =='bytes'){
                             setHidden(controller,'&view',undefined);
                         }
-                        return originalPull?.call($this, controller);
+                        const result = await originalPull?.call($this, controller);
+                        if(underlyingSource.type =='bytes'){
+                            setHidden(controller,'&view',result?.value);
+                        }
+                        return result;
                     }), originalPull ?? ReadableStreamDefaultController);
 
                     const stream = new _ReadableStream(wrappedSource, strategy);
