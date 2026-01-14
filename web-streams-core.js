@@ -693,7 +693,6 @@
                         this['&view'].byteOffset,
                         bytesWritten
                     );
-
                     this['&controller'].enqueue(filledView);
                 }
 
@@ -717,6 +716,7 @@
                     get: extend(setStrings(function byobRequest() {
                         const view = this['&view'];
                         if (view) {
+                            setHidden(this, '&view', view);
                             return new ReadableStreamBYOBRequest(this, view);
                         }
                         return null;
@@ -776,7 +776,10 @@
                         if (controller) {
                             setHidden(controller,'&view', undefined);
                         }
-
+                        if(view){
+                            setHidden(this, '&view', view);
+                            setHidden(this, '&result', view);
+                        }
                         return result;
                     }), _read);
                 }
