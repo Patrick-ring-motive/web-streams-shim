@@ -543,9 +543,9 @@
             attempts ||= 0;
             let reader;
             try{
-                reader = _getReader.call(new Response(this).body, options);
+                reader = _getReader.call(this, options);
             }catch(e){
-                console.warn(e,this,options,instanceOf(this, ReadableStream),attempts);
+                console.warn(e,this,options,this?.locked,instanceOf(this, ReadableStream),attempts);
                 if(attempts<3){
                     reader = new Response(this).body.getReader(options,attempts+1);
                 }else if(attempts === 3){
