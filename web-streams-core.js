@@ -557,7 +557,7 @@
             attempts ||= 0;
             let reader;
             try{
-                reader = _getReader.call(this, options);
+                reader = _getReader.call(this, options,attempts + 1);
             }catch(e){
                 console.warn(e,this,options,this?.locked,instanceOf(this, ReadableStream),attempts);
                 if(attempts<3){
