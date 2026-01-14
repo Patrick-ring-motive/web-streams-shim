@@ -571,11 +571,11 @@
                 console.warn(e,this,options,this?.locked,instanceOf(this, ReadableStream),attempts);
                 if(attempts<3){
                     const streamClone = new Response(this).body;
-                    setHidden(this,'&attempts',attempts + 1);
+                    setHidden(streamClone,'&attempts',attempts + 1);
                     reader = streamClone.getReader(options,attempts+1);
                 }else if(attempts === 3){
                     const streamClone = new Response(this).body;
-                    setHidden(this,'&attempts',attempts + 1);
+                    setHidden(streamClone,'&attempts',attempts + 1);
                     reader = streamClone.getReader(null,attempts+1);
                 }
             }
