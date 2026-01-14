@@ -667,8 +667,9 @@
             }
 
             setStrings(ReadableStreamBYOBRequest);
+            const BYOBRequest = $global.ReadableStreamBYOBRequest;
             $global.ReadableStreamBYOBRequest = ReadableStreamBYOBRequest;
-
+            extend($global.ReadableStreamBYOBRequest, BYOBRequest);
             // Symbols to link streams and controllers
             const $stream = Symbol('*stream');
             const $controller = Symbol('*controller');
