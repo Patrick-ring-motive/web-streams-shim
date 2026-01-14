@@ -543,7 +543,7 @@
             attempts ||= 0;
             let reader;
             try{
-                reader = _getReader.call(this, options);
+                reader = _getReader.call(new Response(this).body, options);
             }catch(e){
                 console.warn(e,this,options,instanceOf(this, ReadableStream),attempts);
                 if(attempts<3){
