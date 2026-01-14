@@ -1,5 +1,5 @@
 (() => {
-    // **TESTING FLAG**: Set to true to force enable all polyfills regardless of feature detection
+    // **TESTING FLAG**: Set to true to force enable all polyfills regardless of feature detection 
     let FORCE_POLYFILLS = false;
     try{
         if(location.href.includes('test.html')){
