@@ -758,7 +758,7 @@
                     const _read = reader.read;
 
                     reader.read = extend(setStrings(async function read(view) {
-                        const controller = this[$controller] ?? reader[$controller] ?? this[$stream]?.[$controller];
+                        const controller = this['&controller'] ?? reader['&controller'] ?? this['&stream']?.['&controller'];
 
                         if (controller && view) {
                             setHidden(controller,'&view', view);
