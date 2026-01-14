@@ -588,7 +588,7 @@
                     }
                 }
             }
-            if (options?.mode == 'byob') {
+            if (options?.mode == 'byob' || this['&mode'] == 'byob') {
                 Object.setPrototypeOf(reader, ReadableStreamBYOBReader.prototype);
             }
             return reader;
