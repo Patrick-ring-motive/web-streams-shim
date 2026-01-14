@@ -545,11 +545,11 @@
             try{
                 reader = _getReader.call(this, options);
             }catch(e){
-                console.warn(e,this,options);
+                console.warn(e,this,options,instanceOf(this, ReadableStream),attempts);
                 if(attempts<3){
                     reader = ReadableStream.from(this).getReader(options,attempts+1);
                 }else if(attempts === 3){
-                    reader = ReadableStream.from(this).getReader();
+                    reader = ReadableStream.from(this).getReader(null,attempts+1);
                 }
             }
             if (options?.mode == 'byob') {
