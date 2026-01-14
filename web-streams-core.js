@@ -1,5 +1,5 @@
 (() => {
-    // **TESTING FLAG**: Set to true to force enable all polyfills regardless of feature detection 
+    // **TESTING FLAG**: Set to true to force enable all polyfills regardless of feature detection
     let FORCE_POLYFILLS = false;
     try{
         if(location.href.includes('test.html')){
@@ -535,6 +535,7 @@
                 reader = _getReader.call(this, options);
             }catch(e){
                 console.warn(e,this,options);
+                reader = ReadableStream.from(this).getReader(options);
             }
             if (options?.mode == 'byob') {
                 Object.setPrototypeOf(reader, ReadableStreamBYOBReader.prototype);
@@ -572,9 +573,6 @@
                 done: false
             };
         }), _read);
-    }
-    if(FORCE_POLYFILLS || typeof ReadableByteStreamController === 'undefined'){
-      $global.ReadableByteStreamController = setStrings(class ReadableByteStreamController extends ReadableStreamDefaultController{});
     }
     const supportsReadableStreamBYOBReaderConstructor = () => {
         try {
@@ -733,6 +731,9 @@
 
                 return reader;
             }), _getReader);
+            if(FORCE_POLYFILLS || typeof ReadableByteStreamController === 'undefined'){
+                $global.ReadableByteStreamController = setStrings(class ReadableByteStreamController extends ReadableStreamDefaultController{});
+            }
         }
     }
 })();
