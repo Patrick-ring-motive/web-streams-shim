@@ -742,13 +742,16 @@
                     wrappedSource.start = extend(setStrings(function start(controller) {
                         setHidden(controller,'&stream',$this);
                         setHidden($this,'&controller',controller);
-                        return originalStart?.call(this, controller);
+                        return originalStart?.call($this, controller);
                     }), originalStart ?? ReadableStreamDefaultController);
 
                     wrappedSource.pull = extend(setStrings(function pull(controller) {
                         setHidden(controller,'&stream',$this);
                         setHidden($this,'&controller',controller);
-                        return originalPull?.call(this, controller);
+                        if(underlyingSource.type =='bytes'){
+                            setHidden(controller,'&view',undefined);
+                        }
+                        return originalPull?.call($this, controller);
                     }), originalPull ?? ReadableStreamDefaultController);
 
                     const stream = new _ReadableStream(wrappedSource, strategy);
