@@ -562,7 +562,7 @@
             if(this.locked === true){
                 throw new TypeError('This stream is already locked for reading by another reader');
             }
-            attempts ||= Math.max(attempts,this['&attempts']||0);
+            attempts ||= Math.max(attempts||0,this['&attempts']||0);
             setHidden(this,'&attempts',attempts + 1);
             let reader;
             try{
