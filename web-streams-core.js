@@ -87,6 +87,20 @@
 
     const instanceOf = (x, y) => Q(() => x instanceof y);
 
+
+    (() => {
+        if (typeof ReadableStream === 'undefined') return;
+        const _locked = Object.getOwnPropertyDescriptor(ReadableStream.prototype, 'locked')?.get;
+        if (FORCE_POLYFILLS || _locked) {
+            Object.defineProperty(ReadableStream.prototype, 'locked', {
+                get: extend(setStrings(function locked() {
+                        return Q(() => _locked.call(this));
+                }), _locked),
+                enumerable: false,
+                configurable: true
+            });
+        }        
+    })();
     /**
      * Polyfill for ReadableStream async iterator protocol support
      */
@@ -669,7 +683,7 @@
             setStrings(ReadableStreamBYOBRequest);
             const BYOBRequest = $global.ReadableStreamBYOBRequest;
             $global.ReadableStreamBYOBRequest = ReadableStreamBYOBRequest;
-            extend($global.ReadableStreamBYOBRequest, BYOBRequest);
+            Q(() => extend($global.ReadableStreamBYOBRequest, BYOBRequest));
             // Symbols to link streams and controllers
             const $stream = Symbol('*stream');
             const $controller = Symbol('*controller');
