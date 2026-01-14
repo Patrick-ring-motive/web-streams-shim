@@ -699,16 +699,12 @@
             const BYOBRequest = $global.ReadableStreamBYOBRequest;
             $global.ReadableStreamBYOBRequest = ReadableStreamBYOBRequest;
             Q(() => extend($global.ReadableStreamBYOBRequest, BYOBRequest));
-            // Symbols to link streams and controllers
-            const $stream = Symbol('*stream');
-            const $controller = Symbol('*controller');
-            const controllerPendingViews = new WeakMap();
 
             // Add byobRequest property to default controller
             if (FORCE_POLYFILLS || !('byobRequest' in ReadableStreamDefaultController.prototype)) {
                 Object.defineProperty(ReadableStreamDefaultController.prototype, 'byobRequest', {
                     get: extend(setStrings(function byobRequest() {
-                        const view = controllerPendingViews.get(this);
+                        const view = this['&view'];
                         if (view) {
                             return new ReadableStreamBYOBRequest(this, view);
                         }
@@ -731,14 +727,14 @@
                     const originalPull = underlyingSource.pull;
 
                     wrappedSource.start = extend(setStrings(function start(controller) {
-                        controller[$stream] = $this;
-                        $this[$controller] = controller;
+                        setHidden(controller,'&stream',$this);
+                        setHidden($this,'&controller',controller);
                         return originalStart?.call(this, controller);
                     }), originalStart ?? ReadableStreamDefaultController);
 
                     wrappedSource.pull = extend(setStrings(function pull(controller) {
-                        controller[$stream] = $this;
-                        $this[$controller] = controller;
+                        setHidden(controller,'&stream',$this);
+                        setHidden($this,'&controller',controller);
                         return originalPull?.call(this, controller);
                     }), originalPull ?? ReadableStreamDefaultController);
 
@@ -754,20 +750,20 @@
             $global.ReadableStream.prototype.getReader = extend(setStrings(function getReader(options) {
                 const reader = _getReader.call(this, options);
 
-                if (options?.mode === 'byob') {
+                if (options?.mode == 'byob' || this['&mode'] == 'byob') {
                     const _read = reader.read;
 
                     reader.read = extend(setStrings(async function read(view) {
                         const controller = this[$controller] ?? reader[$controller] ?? this[$stream]?.[$controller];
 
                         if (controller && view) {
-                            controllerPendingViews.set(controller, view);
+                            setHidden(controller,'&view', view);
                         }
 
                         const result = await _read.call(this, view);
 
                         if (controller) {
-                            controllerPendingViews.delete(controller);
+                            setHidden(controller,'&view', undefined);
                         }
 
                         return result;
