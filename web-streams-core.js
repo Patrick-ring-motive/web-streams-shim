@@ -590,12 +590,15 @@
                         setHidden(streamClone,'&type','bytes');
                         reader = streamClone.getReader(null,attempts+1);
                     }else if(this['&defaultStream']){
-                        reader = this['&defaultStream'].getReader();
+                        reader = new Response(this['&defaultStream']).body.getReader();
                     }
                 }
             }
             if (options?.mode == 'byob' || this['&mode'] == 'byob') {
                 Object.setPrototypeOf(reader, ReadableStreamBYOBReader.prototype);
+                if(this['&defaultStream']){
+                        setHidden(reader,'&defaultReader',new Response(this['&defaultStream']).body.getReader());
+                }
             }
             return reader;
         }, _getReader);
@@ -639,7 +642,11 @@
                 };
             }catch(e){
                 if(FORCE_POLYFILLS)console.warn(e,this,view);
-                return defaultRead.call(this);
+                try{
+                    return await defaultRead.call(this);
+                }catch{
+                    return await defaultRead.call(this['&defaultReader']);
+                }
             }
         }), _read);
         ReadableStreamDefaultReader.prototype.read = ReadableStreamBYOBReader.prototype.read;
