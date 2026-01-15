@@ -740,6 +740,7 @@
                 if (underlyingSource?.type == 'bytes') {
                     setHidden($this, '&mode', 'byob');
                     setHidden($this, '&type', 'bytes');
+                    setHidden($this, 'defaultStream', new _ReadableStream(Object.setPrototypeOf({type:'bytes'},underlyingSource),strategy));
                     const wrappedSource = Object.assign({}, underlyingSource);
                     const originalStart = underlyingSource.start;
                     const originalPull = underlyingSource.pull;
