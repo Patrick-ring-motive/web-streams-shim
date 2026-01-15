@@ -589,6 +589,8 @@
                         setHidden(streamClone,'&mode','byob');
                         setHidden(streamClone,'&type','bytes');
                         reader = streamClone.getReader(null,attempts+1);
+                    }else if(this['&defaultStream']){
+                        reader = this['&defaultStream'].getReader();
                     }
                 }
             }
