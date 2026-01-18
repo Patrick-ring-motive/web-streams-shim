@@ -1,6 +1,6 @@
 {
   "name": "web-streams-shim",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "",
   "main": "web-streams-core.js",
   "browser": "web-streams-core.js",
