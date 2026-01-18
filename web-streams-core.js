@@ -729,11 +729,11 @@
                 Object.defineProperty(ReadableStreamDefaultController.prototype, 'byobRequest', {
                     get: extend(setStrings(function byobRequest() {
                         const view = this['&view'];
-                        if (view || this['&mode'] == 'byob' || this['&type'] == 'bytes') {
+                        //if (view || this['&mode'] == 'byob' || this['&type'] == 'bytes') {
                             setHidden(this, '&view', view);
                             return new ReadableStreamBYOBRequest(this, view);
-                        }
-                        return null;
+                        //}
+                        //return null;
                     }), ReadableStreamBYOBRequest),
                     configurable: true,
                     enumerable: true
