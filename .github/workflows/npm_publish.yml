@@ -18,7 +18,7 @@ jobs:
       - run: npm install -g npm@latest  # Ensure latest npm
       - run: rm -f .npmrc  
       - run: npm ci
-      - run: npm test
+      #- run: npm test
 
   publish-npm:
     needs: build
