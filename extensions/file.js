@@ -19,53 +19,53 @@
  * @note This is a complete implementation, not a partial shim
  */
 (() => {
-    const Q = fn => {
-        try {
-            return fn?.()
-        } catch {}
-    };
-    const setHidden = (obj, prop, value) => {
-        Object.defineProperty(obj, prop, {
-            value,
-            writable: true,
-            enumerable: false,
-            configurable: true
-        });
+  const Q = fn => {
+    try {
+      return fn?.()
+    } catch {}
+  };
+  const setHidden = (obj, prop, value) => {
+    Object.defineProperty(obj, prop, {
+      value,
+      writable: true,
+      enumerable: false,
+      configurable: true
+    });
+  }
+  const $global = Q(() => globalThis) ?? Q(() => global) ?? Q(() => self) ?? Q(() => window) ?? this;
+  if (typeof File === 'undefined') {
+    // Sham File class extending Blob
+    $global.File = class File extends Blob {
+      constructor(bits, filename, options = {}) {
+        // Extract File-specific options
+        const {
+          lastModified = Date.now(), ...blobOptions
+        } = options;
+
+        // Call Blob constructor with bits and blob options
+        super(bits, blobOptions);
+
+        // Add File-specific properties
+        setHidden(this, '&name', filename);
+        setHidden(this, '&lastModified', lastModified);
+        setHidden(this, '&lastModifiedDate', new Date(lastModified));
+      }
+
+      get name() {
+        return this['&name'];
+      }
+
+      get lastModified() {
+        return this['&lastModified'];
+      }
+
+      get lastModifiedDate() {
+        return this['&lastModifiedDate'];
+      }
+
+      get webkitRelativePath() {
+        return '';
+      }
     }
-    const $global = Q(() => globalThis) ?? Q(() => global) ?? Q(() => self) ?? Q(() => window) ?? this;
-    if (typeof File === 'undefined') {
-        // Sham File class extending Blob
-        $global.File = class File extends Blob {
-            constructor(bits, filename, options = {}) {
-                // Extract File-specific options
-                const {
-                    lastModified = Date.now(), ...blobOptions
-                } = options;
-
-                // Call Blob constructor with bits and blob options
-                super(bits, blobOptions);
-
-                // Add File-specific properties
-                setHidden(this, '&name', filename);
-                setHidden(this, '&lastModified', lastModified);
-                setHidden(this, '&lastModifiedDate', new Date(lastModified));
-            }
-
-            get name() {
-                return this['&name'];
-            }
-
-            get lastModified() {
-                return this['&lastModified'];
-            }
-
-            get lastModifiedDate() {
-                return this['&lastModifiedDate'];
-            }
-
-            get webkitRelativePath() {
-                return '';
-            }
-        }
-    }
+  }
 })();
