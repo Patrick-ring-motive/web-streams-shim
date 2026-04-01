@@ -15,7 +15,7 @@ interface Request {
    * Non-standard convenience method
    * @returns The request body as a ReadableStream
    */
-  stream(): ReadableStream<Uint8Array>;
+  stream(): ReadableStream < Uint8Array > ;
 }
 
 /**
@@ -27,7 +27,7 @@ interface Response {
    * Non-standard convenience method
    * @returns The response body as a ReadableStream
    */
-  stream(): ReadableStream<Uint8Array>;
+  stream(): ReadableStream < Uint8Array > ;
 }
 
 /**
@@ -39,14 +39,14 @@ interface Blob {
    * Non-standard convenience method that matches Request/Response API
    * @returns The blob content as a ReadableStream
    */
-  stream(): ReadableStream<Uint8Array>;
-  
+  stream(): ReadableStream < Uint8Array > ;
+
   /**
    * The blob content as a ReadableStream
    * Non-standard property that matches Request/Response API
    */
-  body: ReadableStream<Uint8Array>;
-  
+  body: ReadableStream < Uint8Array > ;
+
   /**
    * Indicates whether the blob body has been consumed
    * Non-standard property that matches Request/Response API
